@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from 'next/font/google'
+import { SessionProvider } from "next-auth/react";
+import Navbar from "@/components/Navbar";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 const montserrat = Montserrat({
   weight: '400',
@@ -19,9 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html className="bg-gray-800" lang="en">
-      <body className={montserrat.className}>
-        {children}
-      </body>
+      <SessionProvider>
+        <body className={montserrat.className}>
+          <Navbar />
+          {children}
+        </body>
+      </SessionProvider>
     </html>
   );
 }

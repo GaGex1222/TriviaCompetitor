@@ -2,10 +2,9 @@ import { sql } from 'drizzle-orm';
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 export const usersTable = sqliteTable('users', {
   id: integer('id').primaryKey(),
+  email: text('email').notNull(),
   username: text('username').notNull(),
-  password: text('password').notNull(),
   createdAt: text('created_at')
-  .default(sql`(CURRENT_TIMESTAMP)`),
 });
 export const triviasTable = sqliteTable('trivias', {
   id: integer('id').primaryKey(),
