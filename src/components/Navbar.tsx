@@ -2,12 +2,20 @@
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { handleErrorToast, handleSuccesToast } from '@/toastFunctions';
 import { Toaster } from 'react-hot-toast';
 
 export default function Navbar(){
-    const {data: session} = useSession()
+    const {data: session, status} = useSession()
+    useEffect(() => {
+        if(status == 'loading'){
+            return
+        }
+        if(session){
+            console.log(session.userId)
+        }
+    }, [session, status])
     const [showMenu, setShowMenu] = useState(false)
     const toggleDropdown = () => {
         if(showMenu){
