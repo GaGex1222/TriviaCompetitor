@@ -27,7 +27,7 @@ export default function Navbar(){
 
     const handleCreateTrivia = () => {
         if(session){
-            redirect('createTrivia')
+            redirect('trivia')
         } else if(!session){
             handleErrorToast("You have to be logged in!")
         }

@@ -26,7 +26,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           await db.insert(usersTable).values({
             email: user.email as string,
             username: user.name as string,
-            createdAt: formattedDate
           })
         }
       }
@@ -41,14 +40,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         .where(eq(usersTable.email, user.email as string));
         if(userQuery.length > 0){
           const userId = userQuery[0]['id']
-          token.userId = userId
+          token.userId = userId 
         }
       }
       return token;
     },
 
     async session({ session, token }) {
-      // Make additional token fields available in the session
       session.userId = String(token.userId);
       return session;
     },

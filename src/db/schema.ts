@@ -9,9 +9,9 @@ export const usersTable = sqliteTable('users', {
 export const triviasTable = sqliteTable('trivias', {
   id: integer('id').primaryKey(),
   title: text('title').notNull(),
-  description: text('description').notNull(),
+  category: text('category').notNull(),
   imageUrl: text('image_url').notNull(),
-  creatorId: integer('creator_id')
+  creatorId: text('creator_id')
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
   createdAt: text('created_at')
