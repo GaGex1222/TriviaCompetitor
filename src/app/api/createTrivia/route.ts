@@ -16,6 +16,7 @@ export async function POST(req: NextRequest){
     if(!success){
         return NextResponse.json({success: "false", message: "Internal server occured!"}, {status: 500})
     } else {
+        console.log(questionsData)
         const insertQuery = await db.insert(triviasTable).values({
             title: title,
             category: category,
@@ -23,31 +24,33 @@ export async function POST(req: NextRequest){
             imageUrl: imageUrl as string,
         }).returning();
         const insertedTriviaId = insertQuery[0].id
-        const questionOptionsArray: Object[] = []
-        // now adding question for each table
-        for(const [questionNumber, questionData] of Object.entries(questionsData)){
+        const questionOptionsArray = []
+        // // now adding question for each table
+        for(const [_, questionData] of Object.entries(questionsData)){
             const insertedQuestionTitle = await db.insert(questionsTable).values({
                 title: questionData['questionTitle'],
                 triviaId: insertedTriviaId,
-                imageUrl: imageUrl
-            })
-            // construct question options array
-            for(let i = 0; i < Object.keys(questionData).length; i++){
-                if(Object.keys(questionData)[i] == "questionTitle"){
+                imageUrl: imageUrl as string 
+            }).returning()
+            console.log("INSERTED QUESTION" + insertedQuestionTitle[0])
+            for(let key of Object.keys(questionData)){
+                if(key == "questionTitle" || key == "isCorrect"){
                     continue
                 } else {
+                    const currentOption = key
                     questionOptionsArray.push({
-                        "questionOptionTitle": questionData[Object.keys(questionData)[i]],
-                        "questionId": insertedQuestionTitle[0].id
+                        "questionOptionTitle": questionData[currentOption],
+                        "questionId": insertedQuestionTitle[0].id,
+                        "correctAnswer": questionData['isCorrect'][currentOption] ? 1 : 0
                     })
-                }   
+                } 
             }
         }
-        // insert options for each question
-        await db
-        .insert(questionOptionsTable)
-        .values(questionOptionsArray)
-        return NextResponse.json({success: "true", message: "Uploaded Trivia!"}, {status: 500})
+        questionOptionsArray.forEach(element => {
+            console.log(element)
+        });
+        const inesertedQuestionOptions = await db.insert(questionOptionsTable).values(questionOptionsArray)
+        return NextResponse.json({success: "true", message: "Uploaded Trivia!"}, {status: 200})
     }
     
 }

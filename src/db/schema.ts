@@ -31,6 +31,7 @@ export const questionsTable = sqliteTable("questions", {
 export const questionOptionsTable =sqliteTable("question_options", {
     id: integer('id').primaryKey(),
     questionOptionTitle: text("question_option_title").notNull(),
+    correctAnswer: integer('correct_answer' ,{mode: 'boolean'}).notNull(),
     questionId: integer("question_id")
     .notNull()
     .references(() => questionsTable.id, {onDelete: 'cascade'})
