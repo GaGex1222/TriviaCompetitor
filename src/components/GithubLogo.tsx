@@ -6,9 +6,9 @@ export default function GithubLogo() {
       width="25"
       height="37"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 97.707 96" // Correct aspect ratio
+      viewBox="0 0 97.707 96" 
       fill="#24292f"
-      preserveAspectRatio="xMidYMid meet" // Prevents cropping
+      preserveAspectRatio="xMidYMid meet"
     >
       <path
         fillRule="evenodd"

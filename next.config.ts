@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['example.com', 'lh3.googleusercontent.com', 'cdn.pixabay.com'],
+    domains: ['example.com', 'lh3.googleusercontent.com', 'cdn.pixabay.com', 'trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com', 'avatars.githubusercontent.com'],
   },
 }
 

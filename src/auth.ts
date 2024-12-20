@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true
     },
     
-    async jwt({user, token}){
+    async jwt({user, token, account}){
       if(user){
         const userQuery = await db
         .select()
@@ -41,6 +41,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if(userQuery.length > 0){
           const userId = userQuery[0]['id']
           token.userId = userId 
+        }
+        if(account.provider == 'github'){
+          console.log(user)
+          console.log(token)
         }
       }
       return token;

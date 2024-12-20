@@ -9,7 +9,7 @@ export const usersTable = sqliteTable('users', {
 export const triviasTable = sqliteTable('trivias', {
   id: integer('id').primaryKey(),
   title: text('title').notNull(),
-  category: text('category').notNull(),
+  description: text('description').notNull(),
   imageUrl: text('image_url').notNull(),
   creatorId: text('creator_id')
     .notNull()

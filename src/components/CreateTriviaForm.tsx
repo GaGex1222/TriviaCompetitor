@@ -14,7 +14,8 @@ export const CreateTriviaForm = () => {
             [key: string] : boolean
         }
     }
-    const buttonStyle = "border-2 hover:shadow-lg hover:-translate-y-1 rounded-md transition duration-300 hover:bg-black hover:border-black hover:text-white text-black border-white p-2 bg-white active:translate-y-0"
+    const [buttonLoading, setButtonLoading] = useState(false);
+    const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-t from-blue-500 to-indigo-600'} text-white font-semibold rounded-lg shadow-lg hover:-translate-y-1 transition-all`
     const [canCreateQuestion, setCanCreateQuestion] = useState(true);
     const {data: session} = useSession();
     const [questionsData, setQuestionsData] = useState<{ [key: number]: Question }>({
@@ -103,6 +104,7 @@ export const CreateTriviaForm = () => {
         console.log(questionsData)
         if(questionIndex == 1){
             handleErrorToast("Can't delete first question!")
+            return
         }
         if(Object.keys(questionsData).length == 1){
             handleErrorToast("Can't remove more questions!")
@@ -119,10 +121,6 @@ export const CreateTriviaForm = () => {
             setQuestionsData(updatedQuestionsData)
         }
         handleSuccesToast("Successfully deleted question!")
-    }
-
-    const handlePrint = () => {
-        console.log(questionsData)
     }
 
     const handleQuestionCreation = () => {
@@ -179,17 +177,21 @@ export const CreateTriviaForm = () => {
                 if(fileType.startsWith('image')){
                     if(fileKbSize < 3000){
                         try{
+                            setButtonLoading(true)
                             const response = await fetch('/api/createTrivia', {
                                 method: "POST",
                                 body: formData
                             })
                             const data = await response.json()
                             if(response.ok){
-                                handleSuccesToast("Trivia reated uccessfully!")
+                                handleSuccesToast("Trivia created successfully!")
+                                setButtonLoading(false)
                             }
                         } catch (Exception) {
                             handleErrorToast("Couldn't create trivia, try again later!")
                             return
+                        } finally {
+                            setButtonLoading(false)
                         }
                     } else {
                         handleErrorToast("File is too large, maximum is 3MB")
@@ -209,7 +211,7 @@ export const CreateTriviaForm = () => {
     return(
         <>
             <div className="mt-12 flex justify-center">
-                <div className="w-[1000px] h-auto p-8 rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg flex flex-col text-white font-semibold">
+                <div className="w-[1000px] h-auto p-8 rounded-lg bg-gray-800 shadow-lg flex flex-col text-white font-semibold">
                     <form onSubmit={handleFormSubmit} className='space-y-4 text-center'>
                         <label className='text-3xl'>Trivia Overview</label>
                         <br/>
@@ -224,12 +226,12 @@ export const CreateTriviaForm = () => {
                             />
                         </div>
                         <div className="mt-4">
-                            <label htmlFor="categoryInput" className="block text-sm font-medium">Category</label>
+                            <label htmlFor="descriptionInput" className="block text-sm font-medium">Description</label>
                             <input 
                                 type="text"  
-                                name="categoryInput" 
+                                name="descriptionInput" 
                                 className="mt-1 p-2 w-full text-black rounded-md border-gray-300"
-                                placeholder="Enter category"
+                                placeholder="Enter description"
                                 required 
                             />
                         </div>
@@ -294,7 +296,7 @@ export const CreateTriviaForm = () => {
                             <button
                                 type="button"
                                 onClick={handleOptionCreation}
-                                className="border-2 hover:shadow-lg hover:-translate-y-1 rounded-md transition duration-300 hover:bg-black hover:border-black hover:text-white text-black border-white p-2 bg-white active:translate-y-0"
+                                className={buttonStyle}
                             >
                                 Add Option
                             </button>
@@ -326,12 +328,6 @@ export const CreateTriviaForm = () => {
                                     onClick={handleNextButton} 
                                     className={`flex-1 ${buttonStyle}`}>
                                     Next Question
-                                </button>
-                                <button 
-                                    type="button" 
-                                    onClick={handlePrint} 
-                                    className={`flex-1 ${buttonStyle}`}>
-                                    Test quesitonData
                                 </button>
                             </div>
                         </div>

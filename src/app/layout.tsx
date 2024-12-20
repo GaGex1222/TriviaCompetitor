@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Montserrat } from 'next/font/google'
+import { Varela_Round } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import { Footer } from "@/components/Footer";
 
-const montserrat = Montserrat({
+const varelaRound = Varela_Round({
   weight: '400',
   subsets: ['latin'],
 })
@@ -21,11 +22,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="bg-gray-800" lang="en">
+    <html className="bg-gradient-to-tr from-blue-500 to-indigo-600" lang="en">
       <SessionProvider>
-        <body className={montserrat.className}>
-          <Navbar />
-          {children}
+        <body className={varelaRound.className}>
+          <div className="min-h-screen flex flex-col">
+            <Navbar/>
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </div>
         </body>
       </SessionProvider>
     </html>

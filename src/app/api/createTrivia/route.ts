@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import uploadAWSImage from "../../../../AWSFunctions";
+import uploadAWSImage from "../../../AWSFunctions";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable } from "@/db/schema";
 export async function POST(req: NextRequest){
     const formData = await req.formData();
     const file = formData.get("fileInput") as File;
     const title = formData.get('titleInput') as string;
-    const category = formData.get('categoryInput') as string;
+    const description = formData.get('descriptionInput') as string;
     const userId = formData.get('userId') as string;
     const questionsData = JSON.parse(formData.get('questionsData') as string);
     if(!file){
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest){
         console.log(questionsData)
         const insertQuery = await db.insert(triviasTable).values({
             title: title,
-            category: category,
+            description: description,
             creatorId: userId,
             imageUrl: imageUrl as string,
         }).returning();
