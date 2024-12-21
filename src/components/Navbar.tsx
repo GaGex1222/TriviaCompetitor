@@ -32,7 +32,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="bg-gradient-to-tr sticky top-0 from-blue-500 to-indigo-600 shadow-lg p-4">
+            <nav className="bg-gradient-to-tr sticky top-0 from-blue-500 to-indigo-600 shadow-lg p-4 z-10">
                 <div className="container mx-auto flex justify-between items-center">
                     <div className="flex items-center">
                         <a href="/" className="text-3xl font-extrabold text-white drop-shadow-md">
