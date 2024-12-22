@@ -6,4 +6,5 @@ export interface Trivia {
     creatorId: number
     createdAt: string
     username: string
+    questions: Array<Object>
 }

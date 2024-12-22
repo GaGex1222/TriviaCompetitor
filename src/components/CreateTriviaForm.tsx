@@ -2,18 +2,10 @@
 import { handleErrorToast, handleSuccesToast } from '@/toastFunctions';
 import { useSession } from 'next-auth/react'
 import React, { use, useEffect, useState } from 'react'
+import { Question } from '@/interfaces/question';
+import { triviaCreationValidation } from '@/dataHelper';
 
 export const CreateTriviaForm = () => {
-    interface Question {
-        questionTitle: string;
-        option1: string;
-        option2: string;
-        option3: string;
-        option4: string;
-        isCorrect: {
-            [key: string] : boolean
-        }
-    }
     const [buttonLoading, setButtonLoading] = useState(false);
     const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-t from-blue-500 to-indigo-600'} text-white font-semibold rounded-lg shadow-lg hover:-translate-y-1 transition-all`
     const [canCreateQuestion, setCanCreateQuestion] = useState(true);
@@ -169,36 +161,32 @@ export const CreateTriviaForm = () => {
         formData.append('questionsData', questionsDataJSON)
         formData.append('userId', session?.userId as string)
         const fileUploaded: FormDataEntryValue | null = formData.get('fileInput')
+        console.log("Question data", questionsData)
         if (fileUploaded){
             if(fileUploaded instanceof File){
                 const fileSize = fileUploaded.size
                 const fileKbSize = fileSize / 1024
                 const fileType: string = fileUploaded.type
-                if(fileType.startsWith('image')){
-                    if(fileKbSize < 3000){
-                        try{
-                            setButtonLoading(true)
-                            const response = await fetch('/api/createTrivia', {
-                                method: "POST",
-                                body: formData
-                            })
-                            const data = await response.json()
-                            if(response.ok){
-                                handleSuccesToast("Trivia created successfully!")
-                                setButtonLoading(false)
-                            }
-                        } catch (Exception) {
-                            handleErrorToast("Couldn't create trivia, try again later!")
-                            return
-                        } finally {
+                const isTriviaValid = triviaCreationValidation(questionsData, fileKbSize, fileType)
+                if(isTriviaValid){
+                    try{
+                        setButtonLoading(true)
+                        const response = await fetch('/api/createTrivia', {
+                            method: "POST",
+                            body: formData
+                        })
+                        const data = await response.json()
+                        if(response.ok){
+                            handleSuccesToast("Trivia created successfully!")
                             setButtonLoading(false)
                         }
-                    } else {
-                        handleErrorToast("File is too large, maximum is 3MB")
+                    } catch (Exception) {
+                        handleErrorToast("Couldn't create trivia, try again later!")
                         return
-                    }
+                    } finally {
+                        setButtonLoading(false)
+                    } 
                 } else {
-                    handleErrorToast("File is not an image.")
                     return
                 }
             }

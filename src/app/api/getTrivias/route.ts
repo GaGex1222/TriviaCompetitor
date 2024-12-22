@@ -20,8 +20,22 @@ export async function POST(req: NextRequest){
         .leftJoin(usersTable ,eq(triviasTable.creatorId, usersTable.id))
         .limit(limit)
         .offset(offset)
-        console.log(trivias)
-        return NextResponse.json({success: true, message: "Receieved all trivias successfully!", data: trivias}, {status: 200})
+        const triviasWithQuestionsPromises = trivias.map(async (item) => {
+            const questions = await db
+            .select({
+                questionId: questionsTable.id
+            })
+            .from(questionsTable)
+            .where(eq(questionsTable.triviaId, item.id))
+
+
+            return {
+                ...item,
+                questions: questions
+            };
+        });
+        const triviasWithQuestions = await Promise.all(triviasWithQuestionsPromises)
+        return NextResponse.json({success: true, message: "Receieved all trivias successfully!", data: triviasWithQuestions}, {status: 200})
     } catch(error) {
         console.log("Error occured when trying to fetch trivias: ", error)
         return NextResponse.json({success: false, message: "Error occured when trying to fetch trivias"}, {status: 500})
