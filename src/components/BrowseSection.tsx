@@ -14,15 +14,13 @@ export default function BrowseSection(){
   useEffect(() => {
     if(!pageParam){
       pageParam = 1
+      setPage(pageParam)
       router.push(`/browse?page=${pageParam}`)
     }
     setPage(pageParam)
-  }, [searchParams])
+  }, [])
 
   useEffect(() => {
-    if(pageParam !== page){
-      return
-    }
     const getTrivias = async () => {
 
       try{
@@ -106,7 +104,7 @@ export default function BrowseSection(){
             {page}
           </p>
           <button
-            disabled={triviasData ? triviasData.length < 8 : false}
+            disabled={triviasData ? triviasData.length <= 8 : false}
             onClick={handleNextPage}
             className="bg-indigo-600 text-white py-2 px-4 rounded transition-all duration-300 hover:bg-indigo-700 disabled:opacity-50"
           >

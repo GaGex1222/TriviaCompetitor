@@ -61,12 +61,13 @@ export default function PlayTrivia({ params }) {
             </div>
             <div className="flex justify-between">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/browse?page=1')}
                 className="bg-indigo-600 text-white py-2 px-4 rounded mt-4 transition-all duration-300 hover:bg-indigo-700"
               >
-                Go Back
+                Browse More
               </button>
               <button
+                onClick={() => router.push(`/playtrivia/${triviaData.id}`)}
                 className="bg-indigo-600 relative  text-white py-2 px-4 rounded mt-4 transition-all duration-300 hover:bg-indigo-700"
               >
                 Play

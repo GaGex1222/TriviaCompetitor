@@ -11,3 +11,7 @@ export async function insertTrivia(title: string, description: string, userId: s
 
     return insertQuery[0].id
 }
+
+export async function mergeQuestionsAndOptions(){
+    
+}

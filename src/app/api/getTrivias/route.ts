@@ -4,6 +4,7 @@ import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "
 import { eq } from "drizzle-orm";
 export async function POST(req: NextRequest){
     const pageNumber = await req.json()
+    console.log("PAGEN UM", pageNumber)
     const limit = 8
     const offset = (pageNumber - 1) * limit
     try{

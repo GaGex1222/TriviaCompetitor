@@ -4,10 +4,11 @@ import { useSession } from 'next-auth/react'
 import React, { use, useEffect, useState } from 'react'
 import { Question } from '@/interfaces/question';
 import { triviaCreationValidation } from '@/dataHelper';
+import { redirect } from 'next/navigation';
 
 export const CreateTriviaForm = () => {
     const [buttonLoading, setButtonLoading] = useState(false);
-    const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-t from-blue-500 to-indigo-600'} text-white font-semibold rounded-lg shadow-lg hover:-translate-y-1 transition-all`
+    const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} text-white py-2 px-4 rounded transition-all duration-300`
     const [canCreateQuestion, setCanCreateQuestion] = useState(true);
     const {data: session} = useSession();
     const [questionsData, setQuestionsData] = useState<{ [key: number]: Question }>({
@@ -178,7 +179,7 @@ export const CreateTriviaForm = () => {
                         const data = await response.json()
                         if(response.ok){
                             handleSuccesToast("Trivia created successfully!")
-                            setButtonLoading(false)
+                            redirect('/triviapreview/')
                         }
                     } catch (Exception) {
                         handleErrorToast("Couldn't create trivia, try again later!")
@@ -208,7 +209,7 @@ export const CreateTriviaForm = () => {
                             <input 
                                 type="text" 
                                 name="titleInput" 
-                                className="mt-1 p-2 w-full rounded-md text-black border-gray-300"
+                                className="mt-1 p-2 w-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 text-black rounded-md"
                                 placeholder="Enter title"
                                 required 
                             />
@@ -218,7 +219,7 @@ export const CreateTriviaForm = () => {
                             <input 
                                 type="text"  
                                 name="descriptionInput" 
-                                className="mt-1 p-2 w-full text-black rounded-md border-gray-300"
+                                className="mt-1 p-2 w-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 text-black rounded-md"
                                 placeholder="Enter description"
                                 required 
                             />
