@@ -8,3 +8,5 @@ export interface Trivia {
     username: string
     questions: Array<Object>
 }
+
+

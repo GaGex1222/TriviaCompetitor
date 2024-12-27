@@ -1,5 +1,5 @@
 'use client'
-import { QuestionsAndOptions } from "@/interfaces/questionsAndOptions";
+import { QuestionsAndOptions } from "@/interfaces/question";
 import { handleErrorToast } from "@/toastFunctions";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -12,6 +12,7 @@ export default function PlayTriviaPage({ params }){
     const [questionIndex, setQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState('');
     const [userAnswers, setUserAnswers] = useState<Array<string>>([]);
+    const [gameFinished, setGameFinished] = useState(false);
 
     useEffect(() => {
       if(seconds > 0){
@@ -19,7 +20,7 @@ export default function PlayTriviaPage({ params }){
         return () => clearTimeout(timer)
       } else {
         handleErrorToast("You didnt answer in time, next question")
-        setSeconds(60)
+        handleQuestionSubmit()
       }
     }, [seconds])
 
@@ -84,7 +85,17 @@ export default function PlayTriviaPage({ params }){
     }
 
     const handleQuestionSubmit = () => {
-      setUserAnswers([...userAnswers, selectedOption]);
+      if(questions.length - 1 === questionIndex){
+        setGameFinished(true)
+      }
+      if(gameFinished){
+        return
+      }
+      if(!selectedOption){
+        setUserAnswers([...userAnswers, null]);
+      } else {
+        setUserAnswers([...userAnswers, selectedOption]);
+      }
       setSelectedOption('');
       setSeconds(60);
       setQuestionIndex(questionIndex + 1);
@@ -92,15 +103,10 @@ export default function PlayTriviaPage({ params }){
       console.log(userAnswers)
     }
 
-    const questionOptionsToArray = () => {
-      const optionsArray = Object.keys(questions[questionIndex].questionOptions)
-      console.log("ssss", optionsArray)
-    }
-
 
 
     return (
-      questions.length > 0 ? (
+      questions.length > 0 && !gameFinished ? (
       <div className="flex flex-col justify-center items-center h-screen">
         <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl">
           <div className="flex justify-between items-center mb-4">
@@ -145,7 +151,7 @@ export default function PlayTriviaPage({ params }){
         </div>
       </div>
       ) : (
-        <div>Loading</div>
+        ''
       )
     );
     

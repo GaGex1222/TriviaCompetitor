@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 export async function POST(req: NextRequest){
     const pageNumber = await req.json()
     console.log("PAGEN UM", pageNumber)
@@ -20,6 +20,7 @@ export async function POST(req: NextRequest){
         .from(triviasTable)
         .leftJoin(usersTable ,eq(triviasTable.creatorId, usersTable.id))
         .limit(limit)
+        .orderBy(triviasTable.createdAt)
         .offset(offset)
         const triviasWithQuestionsPromises = trivias.map(async (item) => {
             const questions = await db

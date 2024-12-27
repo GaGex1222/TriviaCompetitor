@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from "next/navigation";
 import { Trivia } from '@/interfaces/trivia';
+import { TriviaFormErrors } from './TriviaFormErrors';
 
 export default function BrowseSection(){
   const searchParams = useSearchParams();
@@ -56,7 +57,10 @@ export default function BrowseSection(){
       handlePageChange(page - 1)
     }
   }
+
   return (
+    <>
+    <TriviaFormErrors/>
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-7xl">
       <h2 className="text-4xl text-indigo-400 font-semibold text-center mb-8">Browse Quizzes</h2>
@@ -104,7 +108,7 @@ export default function BrowseSection(){
             {page}
           </p>
           <button
-            disabled={triviasData ? triviasData.length <= 8 : false}
+            disabled={triviasData ? triviasData.length < 8 : false}
             onClick={handleNextPage}
             className="bg-indigo-600 text-white py-2 px-4 rounded transition-all duration-300 hover:bg-indigo-700 disabled:opacity-50"
           >
@@ -113,5 +117,6 @@ export default function BrowseSection(){
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
-import { QuestionsAndOptions } from "@/interfaces/questionsAndOptions";
+import { questionOptionsTable, questionsTable } from "@/db/schema";
+import { QuestionsAndOptions } from "@/interfaces/question";
 import { eq } from "drizzle-orm";
 export async function POST(req: NextRequest){
     try{

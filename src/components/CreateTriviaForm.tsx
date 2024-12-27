@@ -2,49 +2,69 @@
 import { handleErrorToast, handleSuccesToast } from '@/toastFunctions';
 import { useSession } from 'next-auth/react'
 import React, { use, useEffect, useState } from 'react'
-import { Question } from '@/interfaces/question';
+import { Questions } from '@/interfaces/question';
 import { triviaCreationValidation } from '@/dataHelper';
 import { redirect } from 'next/navigation';
+import { TriviaFormErrors } from './TriviaFormErrors';
 
 export const CreateTriviaForm = () => {
     const [buttonLoading, setButtonLoading] = useState(false);
-    const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} text-white py-2 px-4 rounded transition-all duration-300`
-    const [canCreateQuestion, setCanCreateQuestion] = useState(true);
-    const {data: session} = useSession();
-    const [questionsData, setQuestionsData] = useState<{ [key: number]: Question }>({
-        1: {
-            "questionTitle":"", 
-            "option1": "", 
-            "option2":"", 
-            "option3":"", 
-            "option4": "",
-            "isCorrect": {
-                "option1": false,
-                "option2": false,
-                "option3": false,
-                "option4": false,
-            },
+        const defaultTriviaValues: Questions = {
+        questionTitle: '',
+        options: {
+            option1: {text: '', isCorrect: false},
+            option2: {text: '', isCorrect: false},
+            option3: {text: '', isCorrect: false},
+            option4: {text: '', isCorrect: false}
         },
+    }
+    const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} text-white py-2 px-4 rounded transition-all duration-300`
+    const [showValidationErrors, setShowValidationErrors] = useState(false);
+    const [canCreateQuestion, setCanCreateQuestion] = useState(true);
+    const [validationErrors, setValidationErrors] = useState<string[]>([]);
+    const {data: session} = useSession();
+    const [questionsData, setQuestionsData] = useState<{ [key: number]: Questions }>({
+        1: defaultTriviaValues
     });
-    const [questionDataArray, setQuestionDataArray] = useState([]);
+    console.log(questionsData)
     const [questionIndex, setQuestionIndex] = useState(1);
-    useEffect(() => {
-        const questionsKeysArray = Object.keys(questionsData[questionIndex])
-        const questionKeysArrayFiltered = questionsKeysArray.filter((key) => key.startsWith('option'))
-        setQuestionDataArray((prevState) => prevState = questionKeysArrayFiltered)
-    }, [questionsData, questionIndex])
+    const questionOptions = questionsData[questionIndex]?.options ? Object.keys(questionsData[questionIndex].options) : [];
 
-    const handleQuestionDataChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const currentInputName = event.currentTarget.name as keyof Question;
+    const handleQuestionOptionChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const optionKey = event.currentTarget.name as keyof Questions;
         const currentInputValue = event.currentTarget.value;
         setQuestionsData((prevState) => ({
             ...prevState,
             [questionIndex]: {
                 ...prevState[questionIndex],
-                [currentInputName]: currentInputValue
+                options: {
+                    ...prevState[questionIndex].options,
+                    [optionKey]: {
+                        ...prevState[questionIndex].options[optionKey],
+                        text: currentInputValue
+                    },
+                },
+            }
+        }))
+        console.log(questionsData)
+    }
+
+    const handleCloseFormErrors = () => {
+        setShowValidationErrors(false);
+    }
+
+    const handleQuestionTitleChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const InputValue = event.currentTarget.value;
+        setQuestionsData((prevState) => ({
+            ...prevState,
+            [questionIndex]: {
+                ...prevState[questionIndex],
+                questionTitle: InputValue
             }
         }))
     }
+
+
     
     const handleNextButton = () => {
         if(questionIndex + 1 <= Object.keys(questionsData).length){
@@ -55,41 +75,30 @@ export const CreateTriviaForm = () => {
     }
 
     const handleCorrectAnswerChange = (keyName: string) => {
-        if(questionsData[questionIndex].isCorrect[keyName] == true){
-            const updatedQuestionData = { ...questionsData }
-            questionsData[questionIndex].isCorrect[keyName] = false;
-            setQuestionsData((prevState) => prevState = updatedQuestionData)
-            console.log(updatedQuestionData)
+        const updatedQuestionData = { ...questionsData }
+        if(questionsData[questionIndex]['options'][keyName]['isCorrect'] == true){
+            questionsData[questionIndex]['options'][keyName]['isCorrect'] = false;
         } else{
-            const updatedQuestionData = { ...questionsData }
-            questionsData[questionIndex].isCorrect[keyName] = true;
-            setQuestionsData((prevState) => prevState = updatedQuestionData)
-            console.log(updatedQuestionData)
+            questionsData[questionIndex]['options'][keyName]['isCorrect'] = true;
         }
+        setQuestionsData((prevState) => prevState = updatedQuestionData)
     }
 
     const handleOptionDelete = (keyName: string) => {
-        if(Object.keys(questionsData[questionIndex]).length == 3){
-            handleErrorToast("2 are the minimum options for a question!")
-            return
-        } else {
-            const updatedQuestionsData = { ...questionsData }
-            delete questionsData[questionIndex][keyName]
-            delete questionsData[questionIndex].isCorrect[keyName]
-            setQuestionsData((prevState) => prevState = updatedQuestionsData)
-            handleSuccesToast("Option successfully deleted!")
-        }
+        const updatedQuestionsData = { ...questionsData }
+        delete questionsData[questionIndex]['options'][keyName]
+        setQuestionsData((prevState) => prevState = updatedQuestionsData)
+        handleSuccesToast("Option successfully deleted!")
     }
 
     const handleOptionCreation = () => {
-        if(Object.keys(questionsData[questionIndex]).length - 2 == 6){
+        if(questionOptions.length == 6){
             handleErrorToast("Max is 6 options!")
             return
         }
-        const newOptionName = `option${Object.keys(questionsData[questionIndex]).length - 1}`
+        const optionToCreate = `option${questionOptions.length + 1}`
         const updatedQuestionData = {...questionsData}
-        questionsData[questionIndex][newOptionName] = ''
-        questionsData[questionIndex].isCorrect[newOptionName] = false;
+        questionsData[questionIndex]['options'][optionToCreate] = {text: '', isCorrect: false}
         setQuestionsData((prevState) => prevState = updatedQuestionData)
     }
 
@@ -105,7 +114,6 @@ export const CreateTriviaForm = () => {
             const updatedQuestionsData = {...questionsData}
             delete updatedQuestionsData[questionIndex]
             for(let i = questionIndex + 1; i <= Object.keys(questionsData).length; i++){
-                console.log("RUN LOG" + i)
                 const newIndex = i - 1;
                 updatedQuestionsData[newIndex] = updatedQuestionsData[i]
                 delete updatedQuestionsData[i];
@@ -121,19 +129,7 @@ export const CreateTriviaForm = () => {
             const questionIndexToCreate = Object.keys(questionsData).length + 1
             setQuestionsData((prevState) => ({
                 ...prevState,
-                [questionIndexToCreate]: {
-                    "questionTitle":"", 
-                    "option1": "", 
-                    "option2":"", 
-                    "option3":"", 
-                    "option4": "",
-                    "isCorrect": {
-                        "option1": false,
-                        "option2": false,
-                        "option3": false,
-                        "option4": false,
-                    },
-                }
+                [questionIndexToCreate]: defaultTriviaValues
             }))
             handleSuccesToast("Question Created Successfully!")
         } else {
@@ -144,9 +140,8 @@ export const CreateTriviaForm = () => {
         setTimeout(() => {
             setCanCreateQuestion((prevState) => prevState = true)
         }, 3000);
-
-        
     }
+
     const handlePreviosQuestion = () => {
         if (questionIndex - 1 == 0){
             handleErrorToast("That is the first question!")
@@ -155,6 +150,7 @@ export const CreateTriviaForm = () => {
             setQuestionIndex((prevState) => prevState - 1)
         }
     }
+
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.target as HTMLFormElement)
@@ -168,8 +164,8 @@ export const CreateTriviaForm = () => {
                 const fileSize = fileUploaded.size
                 const fileKbSize = fileSize / 1024
                 const fileType: string = fileUploaded.type
-                const isTriviaValid = triviaCreationValidation(questionsData, fileKbSize, fileType)
-                if(isTriviaValid){
+                const triviaFormValid = triviaCreationValidation(questionsData, fileKbSize, fileType);
+                if(triviaFormValid === true){
                     try{
                         setButtonLoading(true)
                         const response = await fetch('/api/createTrivia', {
@@ -177,17 +173,21 @@ export const CreateTriviaForm = () => {
                             body: formData
                         })
                         const data = await response.json()
-                        if(response.ok){
+                        if(data.success){
                             handleSuccesToast("Trivia created successfully!")
-                            redirect('/triviapreview/')
+                            const insertedTriviaId = data.InsertedTriviaId
+                            redirect(`/triviapreview/${insertedTriviaId}`)
                         }
                     } catch (Exception) {
+                        console.log("Error occured when tried adding trivia to db", Exception)
                         handleErrorToast("Couldn't create trivia, try again later!")
                         return
                     } finally {
                         setButtonLoading(false)
                     } 
                 } else {
+                    setShowValidationErrors(true)
+                    setValidationErrors(triviaFormValid)
                     return
                 }
             }
@@ -197,6 +197,7 @@ export const CreateTriviaForm = () => {
         }
 
     }
+
     return(
         <>
             <div className="mt-12 flex justify-center">
@@ -242,7 +243,7 @@ export const CreateTriviaForm = () => {
                                 type="text" 
                                 id="questionInput" 
                                 name="questionTitle"
-                                onChange={handleQuestionDataChange}
+                                onChange={handleQuestionTitleChange}
                                 value={questionsData[questionIndex].questionTitle} 
                                 className="mt-1 p-2 w-full rounded-md border-gray-300 text-black"
                                 placeholder="Enter question"
@@ -250,19 +251,20 @@ export const CreateTriviaForm = () => {
                             />
                         </div>
                         <div className="mt-4 grid grid-cols-2 gap-5">
-                            {questionDataArray.map((optionNumber, index) => {
+                            {questionOptions.map((optionNumber, index) => {
+                                console.log("OPTION NAME", optionNumber)
                                 return(
                                     <div className="relative mb-4" key={optionNumber}>
                                     <input
                                         type="text"
                                         name={optionNumber}
-                                        onChange={handleQuestionDataChange}
-                                        value={questionsData[questionIndex][optionNumber] || ''}
+                                        onChange={handleQuestionOptionChange}
+                                        value={questionsData[questionIndex]['options'][optionNumber]['text'] || ''}
                                         className="p-2 w-full rounded-md text-black border-gray-300 pr-10" 
                                         placeholder={`Enter Option ${index + 1}`}
                                         required
                                     />
-                                    {index == questionDataArray.length - 1 && (
+                                    {index == questionOptions.length - 1 && index !== 1 && (
                                         <button
                                             type="button"
                                             onClick={() => handleOptionDelete(optionNumber)}
@@ -274,7 +276,7 @@ export const CreateTriviaForm = () => {
                                     <input 
                                         type="checkbox"
                                         name={optionNumber}
-                                        checked={questionsData[questionIndex].isCorrect[optionNumber] || false}
+                                        checked={questionsData[questionIndex]['options'][optionNumber]['isCorrect'] || false}
                                         className="absolute right-9 top-1/2 transform transition-all -translate-y-1/2 accent-green-500"
                                         onChange={() => handleCorrectAnswerChange(optionNumber)}
                                     />
@@ -320,11 +322,12 @@ export const CreateTriviaForm = () => {
                                 </button>
                             </div>
                         </div>
-
                     </form>
-                    
                 </div>
             </div>
+            {showValidationErrors && (
+                <TriviaFormErrors onClose={handleCloseFormErrors} errors={validationErrors}/>
+            )}
         </>
     );
 }
