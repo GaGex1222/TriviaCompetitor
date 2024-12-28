@@ -60,7 +60,6 @@ export default function BrowseSection(){
 
   return (
     <>
-    <TriviaFormErrors/>
     <div className="flex flex-col justify-center items-center h-screen">
       <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-7xl">
       <h2 className="text-4xl text-indigo-400 font-semibold text-center mb-8">Browse Quizzes</h2>

@@ -44,11 +44,12 @@ export default async function uploadAWSImage(fileUploaded: File) {
         const AWSresponse = await client.send(command);
         console.log("Sent the command")
         const imageUrl = `http://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/${fileName}`
-        if(AWSresponse['$metadata']['httpStatusCode'] == 200){
+        if(AWSresponse['$metadata']['httpStatusCode'] == 200 && AWSresponse.ETag){
             console.log("RETURNING NOW TRUE FROM AWS")
             
             return [true, imageUrl]
         } else {
+            console.log(AWSresponse.ETag)
             console.log("AWS response is not 200, false")
             return [false, null]
         }

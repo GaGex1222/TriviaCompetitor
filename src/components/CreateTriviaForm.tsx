@@ -262,7 +262,6 @@ export const CreateTriviaForm = () => {
                                         value={questionsData[questionIndex]['options'][optionNumber]['text'] || ''}
                                         className="p-2 w-full rounded-md text-black border-gray-300 pr-10" 
                                         placeholder={`Enter Option ${index + 1}`}
-                                        required
                                     />
                                     {index == questionOptions.length - 1 && index !== 1 && (
                                         <button

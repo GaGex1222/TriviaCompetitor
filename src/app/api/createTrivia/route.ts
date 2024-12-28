@@ -3,6 +3,7 @@ import uploadAWSImage from "../../../AWSFunctions";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable } from "@/db/schema";
 import { insertTrivia } from "@/dbHelper";
+import { Questions } from "@/interfaces/question";
 
 export async function POST(req: NextRequest){
     const formData = await req.formData();
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest){
     const description = formData.get('descriptionInput') as string;
     const userId = formData.get('userId') as string;
     const questionsData = JSON.parse(formData.get('questionsData') as string);
+    console.log(questionsData)
 
     if(!file){
         return NextResponse.json({success: "false", message: "File not found."}, {status: 404})
@@ -24,31 +26,30 @@ export async function POST(req: NextRequest){
             const insertedTriviaId = await insertTrivia(title, description, userId, imageUrl as string)
             const questionOptionsArray = []
             // // now adding question for each table
-            for(const questionData of Object.values(questionsData)){
+            Object.values(questionsData).map(async (questionData: Questions) => {
                 const insertedQuestionTitle = await db.insert(questionsTable).values({
                     title: questionData['questionTitle'],
                     triviaId: insertedTriviaId,
                     imageUrl: imageUrl as string 
                 }).returning()
 
-                for(let key of Object.keys(questionData)){
-                    if(key == "questionTitle" || key == "isCorrect"){
-                        continue
-                    } else {
-                        const currentOption = key
-                        questionOptionsArray.push({
-                            "questionOptionTitle": questionData[currentOption],
-                            "questionId": insertedQuestionTitle[0].id,
-                            "correctAnswer": questionData['isCorrect'][currentOption] ? 1 : 0
-                        })
-                    } 
-                }
-            }
+                Object.values(questionData.options).map(async (option) => {
+                    console.log(option.text, option.isCorrect)
+                    questionOptionsArray.push({
+                        "questionOptionTitle": option.text,
+                        "questionId": insertedQuestionTitle[0].id,
+                        "correctAnswer": option.isCorrect ? 1 : 0
+                    })
+                })
+            })
+
+            console.log(questionOptionsArray)
             await db.insert(questionOptionsTable).values(questionOptionsArray)
             return NextResponse.json({success: "true", message: "Uploaded Trivia!", insertedTriviaId: insertedTriviaId}, {status: 200})
         }
     } catch (error){
         console.log("Error creating trivia: ", error)
+        return NextResponse.json({success: "false", message: "Error uploading Trivia!"}, {status: 200})
     }
     
 }

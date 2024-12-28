@@ -17,27 +17,29 @@ export function triviaCreationValidation(questionsData: { [key: string]: Questio
     }
 
     for(let keyName in questionsData){
-        const currentQuestion = questionsData[keyName]
-        let falseCounter = 0
+        const currentQuestionOptions = Object.values(questionsData[keyName].options)
         
-        for(let optionValue of Object.values(currentQuestion.options)){
-            if(!optionValue.isCorrect){
-                falseCounter++;
-            }
+        const isCorrectAnswer = currentQuestionOptions.some((optionValue) => {
+            return optionValue.isCorrect === true
+        })
 
-            if(!optionValue.text){
-                creationErrors.push(`Question number ${keyName} has empty option`)
-                isValid = false;
-            }
+        const hasEmptyOption = currentQuestionOptions.some((optionValue) => {
+            return optionValue.text === ''
+        })
 
-            console.log(creationErrors)
-            if(falseCounter == 4){
-                creationErrors.push(`Question number ${keyName} has no correct answers.`)
-                isValid = false;
-            }
+        if(!isCorrectAnswer){
+            isValid = false;
+            creationErrors.push(`Question number ${keyName} has no correct answers.`)
         }
 
+        if(hasEmptyOption){
+            isValid = false;
+            creationErrors.push(`Question number ${keyName} has empty option`)
+        }
+
+        console.log("ss", isCorrectAnswer)
     }
+
 
     if(!isValid){
         return creationErrors;

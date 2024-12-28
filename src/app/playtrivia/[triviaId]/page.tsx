@@ -120,7 +120,7 @@ export default function PlayTriviaPage({ params }){
             <p>{questions[questionIndex].title}</p> {/* Assuming each question has a 'title' */}
           </div>
     
-          <div className="bg-gray-500 w-full h-64 mb-6">
+          <div className="bg-gray-500 w-full h-96 mb-6">
             <img
               alt="mainImage"
               src={getImageUrl()}
