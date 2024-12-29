@@ -49,7 +49,7 @@ export default function PlayTrivia({ params }) {
       <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-2xl">
         {triviaData ? (
           <>
-            <div className="bg-gray-500 w-full h-64">
+            <div className="bg-gray-500 w-full h-96">
               <img alt="quizImage" src={triviaData.imageUrl} className="object-cover w-full h-full" />
             </div>
             <div className="p-6">

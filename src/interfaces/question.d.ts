@@ -16,3 +16,12 @@ export interface QuestionsAndOptions {
     imageUrl: string
     questionOptions: QuestionOptions
 }
+
+export interface PlayTriviaQuestions {
+    id: number,
+    imageUrl: string,
+    questionOptions: { 
+        [optionText: string]: boolean 
+    }
+    title: string
+}

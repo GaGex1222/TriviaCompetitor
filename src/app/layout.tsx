@@ -25,9 +25,9 @@ export default function RootLayout({
     <html className="bg-gradient-to-tr from-blue-500 to-indigo-600" lang="en">
       <SessionProvider>
         <body className={varelaRound.className}>
-          <div className="min-h-screen flex flex-col">
-            <Navbar/>
-            <main className="flex-grow">{children}</main>
+          <div className="min-h-screen flex flex-col"> 
+            <Navbar /> 
+            <main className="flex-grow">{children}</main> 
             <Footer />
           </div>
         </body>

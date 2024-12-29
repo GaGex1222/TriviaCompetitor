@@ -1,7 +1,8 @@
 'use client'
 import { handleErrorToast, handleSuccesToast } from '@/toastFunctions';
 import { useSession } from 'next-auth/react'
-import React, { use, useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
 import { Questions } from '@/interfaces/question';
 import { triviaCreationValidation } from '@/dataHelper';
 import { redirect } from 'next/navigation';
@@ -20,6 +21,7 @@ export const CreateTriviaForm = () => {
     }
     const buttonStyle = `px-6 py-3 ${buttonLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} text-white py-2 px-4 rounded transition-all duration-300`
     const [showValidationErrors, setShowValidationErrors] = useState(false);
+    const router = useRouter();
     const [canCreateQuestion, setCanCreateQuestion] = useState(true);
     const [validationErrors, setValidationErrors] = useState<string[]>([]);
     const {data: session} = useSession();
@@ -173,10 +175,10 @@ export const CreateTriviaForm = () => {
                             body: formData
                         })
                         const data = await response.json()
+                        console.log("DATA SUCCESSS", data.insertedTriviaId)
                         if(data.success){
                             handleSuccesToast("Trivia created successfully!")
-                            const insertedTriviaId = data.InsertedTriviaId
-                            redirect(`/triviapreview/${insertedTriviaId}`)
+                            router.push(`/triviapreview/${data.insertedTriviaId}`)
                         }
                     } catch (Exception) {
                         console.log("Error occured when tried adding trivia to db", Exception)

@@ -1,5 +1,6 @@
 'use client'
-import { QuestionsAndOptions } from "@/interfaces/question";
+import { TriviaResults } from "@/components/TriviaResults";
+import { PlayTriviaQuestions } from "@/interfaces/question";
 import { handleErrorToast } from "@/toastFunctions";
 import React, { useState } from "react";
 import { useEffect } from "react";
@@ -7,7 +8,7 @@ import { useEffect } from "react";
 
 export default function PlayTriviaPage({ params }){
     const [triviaId, setTriviaId] = useState();
-    const [questions, setQuestions] = useState<Array<QuestionsAndOptions>>([]);
+    const [questions, setQuestions] = useState<Array<PlayTriviaQuestions>>([]);
     const [seconds, setSeconds] = useState(60);
     const [questionIndex, setQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState('');
@@ -37,7 +38,7 @@ export default function PlayTriviaPage({ params }){
           const data = await response.json()
           if(data.success){
             console.log("DATA", data.data)
-            const questionsData: Array<QuestionsAndOptions> = data.data
+            const questionsData: Array<PlayTriviaQuestions> = data.data
             setQuestions(questionsData)
           }
         } catch(error){
@@ -104,7 +105,15 @@ export default function PlayTriviaPage({ params }){
     }
 
 
-
+    if (gameFinished) {
+      return (
+          <div className="flex flex-col justify-center items-center min-h-screen overflow-auto mt-10 mb-10">
+              <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl">
+                  <TriviaResults questionsAndOptions={questions} userAnswers={userAnswers} />
+              </div>
+          </div>
+      );
+    }
     return (
       questions.length > 0 && !gameFinished ? (
       <div className="flex flex-col justify-center items-center h-screen">
