@@ -45,12 +45,12 @@ export default function PlayTrivia({ params }) {
   }, [triviaData])
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-2xl">
+  <div className="flex flex-col justify-center mt-10 items-center max-w-lg mx-auto">
+      <div className="bg-gray-900 p-8 shadow-xl rounded-lg max-w-2xl">
         {triviaData ? (
           <>
-            <div className="bg-gray-500 w-full h-96">
-              <img alt="quizImage" src={triviaData.imageUrl} className="object-cover w-full h-full" />
+            <div className="bg-gray-500 w-full h-60">
+                <img alt="quizImage" src={triviaData.imageUrl} className="object-cover w-full h-full rounded-lg" />
             </div>
             <div className="p-6">
               <h1 className="text-4xl text-center text-white font-semibold mb-4">{triviaData.title}</h1>

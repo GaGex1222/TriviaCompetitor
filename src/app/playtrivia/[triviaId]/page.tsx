@@ -116,8 +116,8 @@ export default function PlayTriviaPage({ params }){
     }
     return (
       questions.length > 0 && !gameFinished ? (
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl">
+      <div className="flex flex-col justify-center items-center"> 
+        <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl"> 
           <div className="flex justify-between items-center mb-4">
             <div className="bg-indigo-600 text-white py-2 px-4 rounded transition-all duration-300">
               Timer: {`${seconds}s`}
@@ -143,8 +143,8 @@ export default function PlayTriviaPage({ params }){
                 key={option}
                 id={option}
                 onClick={(event) => handleSelectQuestion(event)}
-                className={`${selectedOption === option ? "border-indigo-700" : ""} bg-gray-800 text-white p-4 rounded-lg shadow-lg hover:cursor-pointer border-2 border-gray-800 transition-all duration-300`}
-              >
+                className={`${selectedOption === option ? "border-indigo-700" : ""} bg-gray-800 text-white p-4 rounded-lg shadow-lg hover:cursor-pointer border-2 transition-all duration-300`}
+                >
                 <p>{option}</p>
               </div>
             ))}

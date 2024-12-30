@@ -1,23 +1,7 @@
-import type { Config } from "tailwindcss";
-
-export default {
+// tailwind.config.js
+module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    './src/**/*.{js,jsx,ts,tsx}',  // Adjust the paths as needed
   ],
-  variants: {
-    extend: {
-        display: ["group-hover"],
-    },
-  },
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
-    },
-  },
-  plugins: [],
-} satisfies Config;
+  // Ensure that the purge is correctly set for your files
+};

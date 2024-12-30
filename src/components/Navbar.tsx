@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { handleErrorToast } from '@/toastFunctions';
 import { Toaster } from 'react-hot-toast';
+import { User, LogOut } from 'lucide-react';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -32,15 +33,18 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className="bg-gradient-to-tr sticky top-0 from-blue-500 to-indigo-600 shadow-lg p-4 z-10">
+            <nav className="bg-gradient-to-tr sticky top-0 from-blue-500 to-indigo-600 shadow-md p-4 z-10 h-[75px]"> 
                 <div className="container mx-auto flex justify-between items-center">
                     <div className="flex items-center">
                         <a href="/" className="text-3xl font-extrabold text-white drop-shadow-md">
                             Trivia Competitors
                         </a>
+                        <p>
+                            <img alt='logo' className='drop-shadow-sm object-contain' width={80} src={'https://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/image-removebg-preview.png'}/>
+                        </p>
                     </div>
                     {/* Centered Links */}
-                    <div className="hidden md:flex space-x-6 flex-grow justify-center">
+                    <div className="hidden md:flex space-x-12 flex-grow justify-center">
                         <a
                             href="/"
                             className="text-white text-lg hover:text-indigo-200 transition duration-300"
@@ -89,19 +93,26 @@ export default function Navbar() {
                     </div>
 
                     {showMenu && (
-                        <div className="absolute right-32 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
-                            <div className="py-1">
+                        <div className="absolute right-44 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
+                            <div className="">
                                 <button
-                                    onClick={() => redirect('/profile')}
-                                    className="block w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-100"
+                                    onClick={() => redirect(`/profile/${session.user.name}`)}
+                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-100 focus:outline-none"
                                 >
-                                    My Profile
+                                    <span className="flex items-center space-x-2">
+                                        <span>My Profile</span>
+                                        <User className="h-5 w-5" />
+                                    </span>
                                 </button>
+                                <hr className='opacity-20'/>
                                 <button
                                     onClick={() => signOut()}
-                                    className="block px-4 w-full py-2 text-sm transition-all duration-300 text-red-700 hover:bg-gray-100"
+                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-red-700 hover:bg-gray-100 focus:outline-none"
                                 >
-                                    Log out
+                                    <span className="flex items-center space-x-2">
+                                        <span>Log out</span>
+                                        <LogOut className="h-5 w-5" />
+                                    </span>
                                 </button>
                             </div>
                         </div>

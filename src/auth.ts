@@ -24,8 +24,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const today = new Date()
           const formattedDate = today.toISOString().split('T')[0];
           await db.insert(usersTable).values({
-            email: user.email as string,
-            username: user.name as string,
+            email: user.email,
+            username: user.name,
+            profileUrl: user.image
           })
         }
       }

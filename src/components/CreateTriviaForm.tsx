@@ -1,12 +1,12 @@
 'use client'
 import { handleErrorToast, handleSuccesToast } from '@/toastFunctions';
 import { useSession } from 'next-auth/react'
-import React, {useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { Questions } from '@/interfaces/question';
 import { triviaCreationValidation } from '@/dataHelper';
-import { redirect } from 'next/navigation';
 import { TriviaFormErrors } from './TriviaFormErrors';
+
 
 export const CreateTriviaForm = () => {
     const [buttonLoading, setButtonLoading] = useState(false);
@@ -202,8 +202,8 @@ export const CreateTriviaForm = () => {
 
     return(
         <>
-            <div className="mt-12 flex justify-center">
-                <div className="w-[1000px] h-auto p-8 rounded-lg bg-gray-800 shadow-lg flex flex-col text-white font-semibold">
+            <div className="flex justify-center">
+                <div className="w-screen  p-8 bg-gray-800 shadow-lg flex flex-col text-white font-semibold">
                     <form onSubmit={handleFormSubmit} className='space-y-4 text-center'>
                         <label className='text-3xl'>Trivia Overview</label>
                         <br/>
@@ -247,7 +247,7 @@ export const CreateTriviaForm = () => {
                                 name="questionTitle"
                                 onChange={handleQuestionTitleChange}
                                 value={questionsData[questionIndex].questionTitle} 
-                                className="mt-1 p-2 w-full rounded-md border-gray-300 text-black"
+                                className="mt-1 p-2 w-full border-2 rounded-md border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
                                 placeholder="Enter question"
                                 required
                             />
@@ -262,7 +262,7 @@ export const CreateTriviaForm = () => {
                                         name={optionNumber}
                                         onChange={handleQuestionOptionChange}
                                         value={questionsData[questionIndex]['options'][optionNumber]['text'] || ''}
-                                        className="p-2 w-full rounded-md text-black border-gray-300 pr-10" 
+                                        className="p-2 w-full rounded-md pr-10 border-gray-300 border-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700" 
                                         placeholder={`Enter Option ${index + 1}`}
                                     />
                                     {index == questionOptions.length - 1 && index !== 1 && (

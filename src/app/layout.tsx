@@ -3,7 +3,6 @@ import { Varela_Round } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
 import { Footer } from "@/components/Footer";
 
 const varelaRound = Varela_Round({
@@ -26,12 +25,14 @@ export default function RootLayout({
       <SessionProvider>
         <body className={varelaRound.className}>
           <div className="min-h-screen flex flex-col"> 
-            <Navbar /> 
-            <main className="flex-grow">{children}</main> 
-            <Footer />
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
           </div>
         </body>
       </SessionProvider>
     </html>
   );
 }
+

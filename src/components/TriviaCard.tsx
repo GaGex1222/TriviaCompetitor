@@ -23,10 +23,10 @@ export const TriviaCard: React.FC<TriviaCardProps> = ({trivia}) => {
             {trivia.description}
         </p>
         <p className="text-xs text-gray-200 font-semibold">
-            Created by: <span className="text-indigo-300 hover:text-indigo-400">{trivia.username}</span>
+            Created by: <span onClick={(e) => {e.stopPropagation(); router.push(`/profile/${trivia.username}`)}} className="text-indigo-300 hover:text-indigo-400 hover:underline">{trivia.username}</span>
         </p>
         <p className="text-xs text-gray-200 font-semibold">
-            Questions: <span className="text-indigo-300 hover:text-indigo-400">{trivia.questions.length}</span>
+            Questions: <span className="text-indigo-300">{trivia.questions.length}</span>
         </p>
         </div>
     </div>

@@ -23,7 +23,7 @@ export const TriviaResults: React.FC<TrviaiResultsProps> = ({ userAnswers, quest
     }
 
     return (
-        <div className="flex flex-col justify-center items-center min-h-screen mt-10 mb-10">
+        <div className="flex flex-col justify-center items-center top-0 min-h-screen mt-10 mb-10">
             <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl">
                 <div className="text-white text-2xl font-semibold mb-6">
                     <p className='text-center'>Trivia Results</p>
