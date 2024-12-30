@@ -2,18 +2,16 @@
 
 
 
-First, run the development server:
+## About the Project
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Trivia Competitors is a Next.js application designed to challenge your trivia knowledge and allow you to compete with others in real-time. With OAuth authentication, creating and competing in trivia games is secure and straightforward. Each player has their own profile where they can track their progress and achievements.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
+
+- OAuth authentication
+- Create and compete in trivia games
+- Player profiles with progress tracking
+
+
 
 
