@@ -9,4 +9,14 @@ export interface Trivia {
     questions: Array<Object>
 }
 
+export interface PlayTriviaQuestions {
+    id: number,
+    imageUrl: string,
+    questionOptions: { 
+        [optionText: string]: boolean 
+    }
+    title: string
+}
+
+
 

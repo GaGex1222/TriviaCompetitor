@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable } from "@/db/schema";
 import { insertTrivia } from "@/dbHelper";
 import { Questions } from "@/interfaces/question";
+import { errorResponse, successResponse } from "@/utils/responseHelper";
 
 export async function POST(req: NextRequest){
     const formData = await req.formData();
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest){
     const questionsData: Questions[] = JSON.parse(formData.get('questionsData') as string);
 
     if(!file){
-        return NextResponse.json({success: "false", message: "File not found."}, {status: 404})
+        return errorResponse("File not found.")
     }
 
     try {
@@ -50,11 +51,11 @@ export async function POST(req: NextRequest){
             }
 
             await db.insert(questionOptionsTable).values(questionOptionsArray);
-            return NextResponse.json({success: "true", message: "Uploaded Trivia!", insertedTriviaId: insertedTriviaId}, {status: 200})
+            return successResponse("Uploaded Trivia!", insertedTriviaId, 'insertedTriviaId')
         }
     } catch (error){
         console.log("Error creating trivia: ", error)
-        return NextResponse.json({success: "false", message: "Error uploading Trivia!"}, {status: 200})
+        return errorResponse("File not found.")
     }
     
 }

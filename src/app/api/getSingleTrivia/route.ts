@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { errorResponse, successResponse } from "@/utils/responseHelper";
 export async function POST(req: NextRequest){
     const { triviaId } = await req.json()
     console.log("TITIT", triviaId)
@@ -31,9 +32,9 @@ export async function POST(req: NextRequest){
             questions: numOfQuestions
 
         }
-        return NextResponse.json({success: true, message: "Successfully retrieved single trivia!", data: triviaWithQuestions}, {status: 200})
+        return successResponse("Successfully retrieved single trivia!", triviaWithQuestions)
     } catch (err) {
         console.log("Error fetching single trivia", err)
-        return NextResponse.json({success: false, message: "Error occured while fetching single trivia"}, {status: 500})
+        return errorResponse("Error occured while fetching single trivia")
     }
 }

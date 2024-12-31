@@ -1,5 +1,6 @@
-import { Questions } from "./interfaces/question";
-import { handleErrorToast } from "./toastFunctions";
+import { Questions, QuestionsAndOptions } from "../interfaces/question";
+import { PlayTriviaQuestions } from "../interfaces/trivia";
+import { handleErrorToast } from "../toastFunctions";
 
 export function triviaCreationValidation(questionsData: { [key: string]: Questions }, fileKbSize: number, fileType: string){
 
@@ -47,4 +48,19 @@ export function triviaCreationValidation(questionsData: { [key: string]: Questio
 
     return true;
     
+}
+
+
+export function calculateTriviaScore(questionsAndOptions: Array<PlayTriviaQuestions>, userAnswers: string[]){
+    let score = 0;
+    for(let i = 0; i < questionsAndOptions.length; i++){
+        Object.keys(questionsAndOptions[i].questionOptions).map((questionText) =>{
+            if(questionsAndOptions[i].questionOptions[questionText]){
+                if(userAnswers.includes(questionText)){
+                    score++;
+                }
+            }
+        })
+    }
+    return score
 }

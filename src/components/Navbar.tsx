@@ -43,7 +43,6 @@ export default function Navbar() {
                             <img alt='logo' className='drop-shadow-sm object-contain' width={80} src={'https://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/image-removebg-preview.png'}/>
                         </p>
                     </div>
-                    {/* Centered Links */}
                     <div className="hidden md:flex space-x-12 flex-grow justify-center">
                         <a
                             href="/"
@@ -64,7 +63,6 @@ export default function Navbar() {
                             Browse
                         </a>
                     </div>
-                    {/* Right-aligned Login/Profile */}
                     <div className="hidden md:block">
                         {!session ? (
                             <a
@@ -117,8 +115,6 @@ export default function Navbar() {
                             </div>
                         </div>
                     )}
-
-                    {/* Mobile Menu Button */}
                     <div className="md:hidden flex items-center">
                         <button className="text-white hover:text-indigo-200 focus:outline-none">
                             <svg

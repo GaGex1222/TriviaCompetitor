@@ -1,3 +1,4 @@
+
 import { TriviaCardProps } from '@/interfaces/props'
 import { useRouter } from 'next/navigation'
 import React from 'react'

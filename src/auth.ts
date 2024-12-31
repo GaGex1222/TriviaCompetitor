@@ -26,7 +26,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           await db.insert(usersTable).values({
             email: user.email,
             username: user.name,
-            profileUrl: user.image
+            profileUrl: user.image,
+            points: 0
           })
         }
       }

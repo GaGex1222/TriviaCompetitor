@@ -1,12 +1,12 @@
 import { db } from "@/db";
 import { usersTable } from "@/db/schema";
+import { errorResponse, successResponse } from "@/utils/responseHelper";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest){
     const { username } = await req.json()
     const decodedUsername = decodeURIComponent(username);
-    console.log("sss", decodedUsername)
     try{
         const userData = await db
         .select({
@@ -16,10 +16,15 @@ export async function POST(req: NextRequest){
         })
         .from(usersTable)
         .where(eq(usersTable.username, decodedUsername))
-        console.log("User Data: ", userData[0])
-        return NextResponse.json({success: true, message: "Retrieved user data successfully!", userData: userData[0]})
+        if(userData.length > 0){
+            console.log("SUCCSESS")
+            return successResponse("Retrieved user data successfully!", userData, 'userData')
+        } else {
+            console.log("BZZZZZZ")
+            return errorResponse("Couldn't fetch user data")
+        }
     } catch (exc){
         console.error(exc)
-        return NextResponse.json({success: false, message: "Internal server error occured!"})
+        return errorResponse("Internal server error occured!")
     }
 }

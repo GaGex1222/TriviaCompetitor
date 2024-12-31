@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
+import { errorResponse, successResponse } from "@/utils/responseHelper";
 export async function POST(req: NextRequest){
     const pageNumber = await req.json()
     console.log("PAGEN UM", pageNumber)
@@ -37,9 +38,9 @@ export async function POST(req: NextRequest){
             };
         });
         const triviasWithQuestions = await Promise.all(triviasWithQuestionsPromises)
-        return NextResponse.json({success: true, message: "Receieved all trivias successfully!", data: triviasWithQuestions}, {status: 200})
+        return successResponse("Receieved all trivias successfully!", triviasWithQuestions, "triviasWithQuestions")
     } catch(error) {
         console.log("Error occured when trying to fetch trivias: ", error)
-        return NextResponse.json({success: false, message: "Error occured when trying to fetch trivias"}, {status: 500})
+        return errorResponse("Error occured when trying to fetch trivias")
     }
 }

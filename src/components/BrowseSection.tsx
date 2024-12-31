@@ -34,8 +34,8 @@ export default function BrowseSection(){
             'Content-Type': 'application/json',
           },
         })
-        const data = await reponse.json()
-        const trivias = data['data']
+        const result = await reponse.json()
+        const trivias = result['triviasWithQuestions']
         setTriviasData(trivias)
       } catch (error){
         console.log("ERRORR", error)

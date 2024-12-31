@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { questionOptionsTable, questionsTable } from "@/db/schema";
 import { QuestionsAndOptions } from "@/interfaces/question";
 import { eq } from "drizzle-orm";
+import { errorResponse, successResponse } from "@/utils/responseHelper";
 export async function POST(req: NextRequest){
     try{
         const triviaId = await req.json()
@@ -37,10 +38,10 @@ export async function POST(req: NextRequest){
         })
         const questionsAndOptions = await Promise.all(questionsAndOptionsPromises)
         console.log(questionsAndOptions)
-        return NextResponse.json({success: true, message: "Successfully fetched questionsData!", data: questionsAndOptions})
+        return successResponse("Successfully fetched questionsData!", questionsAndOptions)
     } catch(error){
         console.log(error)
-        return NextResponse.json({success: false, message: "Couldn't fetch questionsData, try again later and check logs"})
+        return errorResponse("Couldn't fetch questionsData, try again later and check logs")
     }
 
 }
