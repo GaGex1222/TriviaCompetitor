@@ -3,13 +3,15 @@ import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
+import { Trivia } from "@/interfaces/trivia";
+import { getQuestionsOfTrivias } from "@/utils/dbHelper";
 export async function POST(req: NextRequest){
     const pageNumber = await req.json()
     console.log("PAGEN UM", pageNumber)
     const limit = 8
     const offset = (pageNumber - 1) * limit
     try{
-        const trivias = await db
+        const trivias: Trivia[] = await db
         .select({
             id: triviasTable.id,
             title: triviasTable.title,
@@ -23,21 +25,7 @@ export async function POST(req: NextRequest){
         .limit(limit)
         .orderBy(triviasTable.createdAt)
         .offset(offset)
-        const triviasWithQuestionsPromises = trivias.map(async (item) => {
-            const questions = await db
-            .select({
-                questionId: questionsTable.id
-            })
-            .from(questionsTable)
-            .where(eq(questionsTable.triviaId, item.id))
-
-
-            return {
-                ...item,
-                questions: questions
-            };
-        });
-        const triviasWithQuestions = await Promise.all(triviasWithQuestionsPromises)
+        const triviasWithQuestions: Trivia[] = await getQuestionsOfTrivias(trivias)
         return successResponse("Receieved all trivias successfully!", triviasWithQuestions, "triviasWithQuestions")
     } catch(error) {
         console.log("Error occured when trying to fetch trivias: ", error)

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import uploadAWSImage from "../../../AWSFunctions";
 import { db } from "@/db";
 import { questionOptionsTable, questionsTable, triviasTable } from "@/db/schema";
-import { insertTrivia } from "@/dbHelper";
+import { insertTrivia } from "@/utils/dbHelper";
 import { Questions } from "@/interfaces/question";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 

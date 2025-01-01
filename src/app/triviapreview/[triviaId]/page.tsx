@@ -32,7 +32,6 @@ export default function PlayTrivia({ params }) {
       if(response.ok){
         const data = await response.json()
         setTriviaData(data['data'])
-        console.log("OK")
       } else {
         console.log("oh no")
       }
@@ -41,7 +40,7 @@ export default function PlayTrivia({ params }) {
   }, [triviaId])
 
   useEffect(() => {
-    console.log(triviaData)
+    console.log("ssssss", triviaData)
   }, [triviaData])
 
   return (

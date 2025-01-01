@@ -15,4 +15,8 @@ export interface TrviaiResultsProps {
 export interface TriviaCardProps {
     trivia: Trivia
 }
+
+export interface UserSpecificTriviasProps {
+    triviaData: Trivia[]
+}
   

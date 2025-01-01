@@ -3,10 +3,10 @@ export interface Trivia {
     title: string
     description: string
     imageUrl: string
-    creatorId: number
+    creatorId?: number
     createdAt: string
-    username: string
-    questions: Array<Object>
+    username?: string
+    questions?: Array<Object>
 }
 
 export interface PlayTriviaQuestions {
