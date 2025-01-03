@@ -1,7 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
-import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { NextRequest } from "next/server";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 import { getSingleTrivia } from "@/utils/dbHelper";
 export async function POST(req: NextRequest){

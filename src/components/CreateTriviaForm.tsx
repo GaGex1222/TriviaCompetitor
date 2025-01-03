@@ -18,11 +18,6 @@ export const CreateTriviaForm = () => {
       option4: { text: "", isCorrect: false },
     },
   };
-  const buttonStyle = `px-6 py-3 ${
-    buttonLoading
-      ? "bg-gray-400 cursor-not-allowed"
-      : "bg-indigo-600 hover:bg-indigo-700"
-  } text-white py-2 px-4 rounded transition-all duration-300`;
   const [showValidationErrors, setShowValidationErrors] = useState(false);
   const router = useRouter();
   const [canCreateQuestion, setCanCreateQuestion] = useState(true);
@@ -222,57 +217,50 @@ export const CreateTriviaForm = () => {
 
   return (
     <>
-      <div className="flex justify-center">
-        <div className="w-screen  p-8 bg-gray-800 shadow-lg flex flex-col text-white font-semibold">
+      <div className="flex justify-center min-h-screen">
+        <div className="w-screen p-8 bg-gray-900 shadow-lg flex flex-col text-gray-200 font-semibold">
           <form onSubmit={handleFormSubmit} className="space-y-4 text-center">
-            <label className="text-3xl">Trivia Overview</label>
+            <label className="text-3xl text-gray-200">Trivia Overview</label>
             <br />
             <div className="mt-4">
-              <label htmlFor="titleInput" className="block text-sm font-medium">
+              <label htmlFor="titleInput" className="block text-sm font-medium text-gray-300">
                 Title
               </label>
               <input
                 type="text"
                 name="titleInput"
-                className="mt-1 p-2 w-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 text-black rounded-md"
+                className="mt-1 p-2 w-full border-2 border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 text-gray-800 rounded-md"
                 placeholder="Enter title"
                 required
               />
             </div>
             <div className="mt-4">
-              <label
-                htmlFor="descriptionInput"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="descriptionInput" className="block text-sm font-medium text-gray-300">
                 Description
               </label>
               <input
                 type="text"
                 name="descriptionInput"
-                className="mt-1 p-2 w-full border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 text-black rounded-md"
+                className="mt-1 p-2 w-full border-2 border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 text-gray-800 rounded-md"
                 placeholder="Enter description"
                 required
               />
             </div>
             <div className="mt-4">
-              <label htmlFor="fileInput" className="block text-sm font-medium">
+              <label htmlFor="fileInput" className="block text-sm font-medium text-gray-300">
                 Select Image
               </label>
               <input
                 type="file"
                 id="fileInput"
                 name="fileInput"
-                className="mt-1 p-2 w-full rounded-md border-gray-300 border-2 bg-white text-black hover:bg-gray-100"
+                className="mt-1 p-2 w-full rounded-md border-gray-600 border-2 transition-all duration-200 bg-gray-800 text-gray-200 hover:bg-gray-700"
                 required
               />
             </div>
             <div className="mt-4">
-              <label
-                htmlFor="questionInput"
-                className="font-semibold block text-xl mb-2 text-center"
-              >
-                Question{" "}
-                {`${questionIndex}/${Object.keys(questionsData).length}`}
+              <label htmlFor="questionInput" className="font-semibold block text-xl mb-2 text-gray-200 text-center">
+                Question {`${questionIndex}/${Object.keys(questionsData).length}`}
               </label>
               <input
                 type="text"
@@ -280,14 +268,13 @@ export const CreateTriviaForm = () => {
                 name="questionTitle"
                 onChange={handleQuestionTitleChange}
                 value={questionsData[questionIndex].questionTitle}
-                className="mt-1 p-2 w-full border-2 rounded-md border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
+                className="mt-1 p-2 w-full border-2 rounded-md border-gray-600 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
                 placeholder="Enter question"
                 required
               />
             </div>
             <div className="mt-4 grid grid-cols-2 gap-5">
               {questionOptions.map((optionNumber, index) => {
-                console.log("OPTION NAME", optionNumber);
                 return (
                   <div className="relative mb-4" key={optionNumber}>
                     <input
@@ -295,14 +282,12 @@ export const CreateTriviaForm = () => {
                       name={optionNumber}
                       onChange={handleQuestionOptionChange}
                       value={
-                        questionsData[questionIndex]["options"][optionNumber][
-                          "text"
-                        ] || ""
+                        questionsData[questionIndex]["options"][optionNumber]["text"] || ""
                       }
-                      className="p-2 w-full rounded-md pr-10 border-gray-300 border-2 text-black focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700"
+                      className="p-2 w-full rounded-md pr-10 border-gray-600 border-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600"
                       placeholder={`Enter Option ${index + 1}`}
                     />
-                    {index == questionOptions.length - 1 && index !== 1 && (
+                    {index === questionOptions.length - 1 && index !== 1 && (
                       <button
                         type="button"
                         onClick={() => handleOptionDelete(optionNumber)}
@@ -315,9 +300,7 @@ export const CreateTriviaForm = () => {
                       type="checkbox"
                       name={optionNumber}
                       checked={
-                        questionsData[questionIndex]["options"][optionNumber][
-                          "isCorrect"
-                        ] || false
+                        questionsData[questionIndex]["options"][optionNumber]["isCorrect"] || false
                       }
                       className="absolute right-9 top-1/2 transform transition-all -translate-y-1/2 accent-green-500"
                       onChange={() => handleCorrectAnswerChange(optionNumber)}
@@ -329,7 +312,7 @@ export const CreateTriviaForm = () => {
                 <button
                   type="button"
                   onClick={handleOptionCreation}
-                  className={buttonStyle}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                 >
                   Add Option
                 </button>
@@ -340,14 +323,14 @@ export const CreateTriviaForm = () => {
                 <button
                   type="button"
                   onClick={handleQuestionCreation}
-                  className={buttonStyle}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                 >
                   Create Question
                 </button>
                 <button
                   type="button"
                   onClick={handleQuestionDeletion}
-                  className={buttonStyle}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
                 >
                   Delete Question
                 </button>
@@ -356,17 +339,17 @@ export const CreateTriviaForm = () => {
                 <button
                   type="button"
                   onClick={handlePreviosQuestion}
-                  className={`flex-1 ${buttonStyle}`}
+                  className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}
                 >
                   Previous Question
                 </button>
-                <button type="submit" className={`flex-1 ${buttonStyle}`}>
+                <button type="submit" className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}>
                   Upload Trivia
                 </button>
                 <button
                   type="button"
                   onClick={handleNextButton}
-                  className={`flex-1 ${buttonStyle}`}
+                  className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}
                 >
                   Next Question
                 </button>
@@ -383,4 +366,5 @@ export const CreateTriviaForm = () => {
       )}
     </>
   );
+   
 };

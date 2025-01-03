@@ -11,13 +11,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google, GitHub],
   callbacks: {
     async signIn({user}){
-      if(user.email){
-        console.log("Email exists in session")
+      console.log("USER", user.name)
+      if(user.name){
+        console.log("Email exists in signin")
         const userExists = await db
         .select()
         .from(usersTable)
-        .where(eq(usersTable.email, user.email));
-        console.log(userExists)
+        .where(eq(usersTable.username, user.name));
+        console.log("ssss", userExists)
   
         if(userExists.length === 0){
           console.log("User doesn't exist in the database, adding hjim")
@@ -27,6 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             email: user.email,
             username: user.name,
             profileUrl: user.image,
+            createdAt: formattedDate,
             points: 0
           })
         }
@@ -39,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const userQuery = await db
         .select()
         .from(usersTable)
-        .where(eq(usersTable.email, user.email as string));
+        .where(eq(usersTable.username, user.name as string));
         if(userQuery.length > 0){
           const userId = userQuery[0]['id']
           token.userId = userId 

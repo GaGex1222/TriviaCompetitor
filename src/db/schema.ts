@@ -6,7 +6,8 @@ export const usersTable = sqliteTable('users', {
   username: text('username').notNull(),
   points: integer('points').notNull(),
   profileUrl: text('profile_url').notNull(),
-  createdAt: text('created_at')
+  createdAt: text('created_at').notNull(),
+  bio: text('bio'),
 });
 export const triviasTable = sqliteTable('trivias', {
   id: integer('id').primaryKey(),

@@ -17,6 +17,7 @@ export interface TriviaCardProps {
 }
 
 export interface UserSpecificTriviasProps {
-    triviaData: Trivia[]
+    triviaData: Trivia[],
+    page: number,
 }
   
