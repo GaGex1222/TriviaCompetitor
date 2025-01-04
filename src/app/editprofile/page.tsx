@@ -1,6 +1,6 @@
 'use client'
 import { UserData } from '@/interfaces/user'
-import { handleErrorToast } from '@/toastFunctions'
+import { handleErrorToast, handleSuccesToast } from '@/toastFunctions'
 import { Loader2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 
 export default function EditProfilePage() {
     const router = useRouter()
-    const { data: session, status } = useSession()
+    const { data: session, status, update } = useSession()
     const [userData, setUserData] = useState<UserData>()
     const [loading, setLoading] = useState(false)
 
@@ -16,22 +16,32 @@ export default function EditProfilePage() {
         e.preventDefault();
     
         const formData = new FormData(e.target as HTMLFormElement);
-        formData.append("userId" ,session.user.id)
+        formData.append("userId" ,session.userId)
     
         try {
             const response = await fetch('/api/editUserProfile', {
                 method: 'POST',
                 body: formData, 
             });
-    
-            if (response.ok) {
+            if (response.status === 200) {
                 const result = await response.json();
-                console.log('Profile updated successfully:', result);
-            } else {
-                console.error('Error updating profile:', response.status);
-            }
+                console.log("RESULT", result)
+                const updatedUserData = result['data'][0]
+                console.log("sddsdsss", updatedUserData)
+                const updSession = await update({
+                    user: {
+                        ...session.user,
+                        image: updatedUserData.profileUrl,
+                        name: updatedUserData.username
+                    }
+                })
+                handleSuccesToast("Successfully saved changes!")
+                router.push(`/profile/${updatedUserData.username}`)
+            } 
         } catch (error) {
             console.error('Network error while updating profile:', error);
+            handleErrorToast("Error while changing account information, try again later")
+            return
         }
     };
 

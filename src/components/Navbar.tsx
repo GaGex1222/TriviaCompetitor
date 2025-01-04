@@ -62,6 +62,12 @@ export default function Navbar() {
                         >
                             Browse
                         </a>
+                        <a
+                            href="/leaderboard"
+                            className="text-white text-lg hover:text-indigo-200 transition duration-300"
+                        >
+                            Leaderboard
+                        </a>
                     </div>
                     <div className="hidden md:block">
                         {!session ? (
@@ -74,16 +80,14 @@ export default function Navbar() {
                         ) : (
                             <>
                                 <button onClick={toggleDropdown}>
-                                    <Image
+                                    <img
                                         src={
                                             session.user?.image
                                                 ? session.user.image
                                                 : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                                         }
-                                        className="rounded-full"
+                                        className="rounded-full w-10 h-10 object-cover"
                                         alt="profile_picture"
-                                        width={40}
-                                        height={40}
                                     />
                                 </button>
                             </>
@@ -95,7 +99,7 @@ export default function Navbar() {
                             <div className="">
                                 <button
                                     onClick={() => redirect(`/profile/${session.user.name}`)}
-                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-100 focus:outline-none"
+                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-800 focus:outline-none"
                                 >
                                     <span className="flex items-center space-x-2">
                                         <span>My Profile</span>
@@ -105,7 +109,7 @@ export default function Navbar() {
                                 <hr className='opacity-20'/>
                                 <button
                                     onClick={() => signOut()}
-                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-red-700 hover:bg-gray-100 focus:outline-none"
+                                    className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-red-700 hover:bg-gray-800 focus:outline-none"
                                 >
                                     <span className="flex items-center space-x-2">
                                         <span>Log out</span>

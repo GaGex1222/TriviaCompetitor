@@ -9,11 +9,6 @@ module.exports = {
   images: {
     domains: ['example.com', 'lh3.googleusercontent.com', 'cdn.pixabay.com', 'trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com', 'avatars.githubusercontent.com'],
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: '2mb',
-    },
-  },
 }
 
 export default nextConfig;
