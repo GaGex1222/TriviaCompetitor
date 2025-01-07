@@ -20,8 +20,14 @@ export default function Navbar() {
     }, [session, status]);
 
     const [showMenu, setShowMenu] = useState(false);
+    const [mobileMenu, setMobileMenu] = useState(false);
+
     const toggleDropdown = () => {
         setShowMenu(!showMenu);
+    };
+
+    const toggleMobileMenu = () => {
+        setMobileMenu(!mobileMenu);
     };
 
     const handleCreateTrivia = () => {
@@ -122,8 +128,71 @@ export default function Navbar() {
                             </div>
                         </div>
                     )}
+
+                    {mobileMenu && (
+                        !session ? (
+                            <div className="md:hidden absolute right-0 top-16 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
+                                <Link
+                                    href="/"
+                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
+                                >
+                                    Home
+                                </Link>
+                                <Link
+                                    href={'/createtrivia'}
+                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
+                                >
+                                    Create Trivia
+                                </Link>
+                                <Link
+                                    href="/browse"
+                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
+                                >
+                                    Browse
+                                </Link>
+                                <Link
+                                    href="/leaderboard"
+                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
+                                >
+                                    Leaderboard
+                                </Link>
+                                {!session && (
+                                    <Link
+                                        href="/login"
+                                        className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
+                                    >
+                                        Login
+                                    </Link>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="absolute right-44 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
+                                <div className="">
+                                    <button
+                                        onClick={() => redirect(`/profile/${session.user.name}`)}
+                                        className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-800 focus:outline-none"
+                                    >
+                                        <span className="flex items-center space-x-2">
+                                            <span>My Profile</span>
+                                            <User className="h-5 w-5" />
+                                        </span>
+                                    </button>
+                                    <hr className='opacity-20'/>
+                                    <button
+                                        onClick={() => signOut()}
+                                        className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-red-700 hover:bg-gray-800 focus:outline-none"
+                                    >
+                                        <span className="flex items-center space-x-2">
+                                            <span>Log out</span>
+                                            <LogOut className="h-5 w-5" />
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                    )}
                     <div className="md:hidden flex items-center">
-                        <button className="text-white hover:text-indigo-200 focus:outline-none">
+                        <button onClick={toggleMobileMenu} className="text-white hover:text-indigo-200 focus:outline-none">
                             <svg
                                 className="w-8 h-8"
                                 fill="none"
