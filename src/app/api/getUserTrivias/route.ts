@@ -18,7 +18,7 @@ export async function POST(req: NextRequest){
             createdAt: triviasTable.createdAt
         })
         .from(triviasTable)
-        .where(eq(triviasTable.creatorId, String(userId)))
+        .where(eq(triviasTable.creatorId, Number(userId)))
         
 
         const triviasWithQuestions = await getQuestionsOfTrivias(triviasData)

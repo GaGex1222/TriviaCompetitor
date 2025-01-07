@@ -195,6 +195,8 @@ export const CreateTriviaForm = () => {
             if (result.success) {
               handleSuccesToast("Trivia created successfully!");
               router.push(`/triviapreview/${result.insertedTriviaId}`);
+            } else {
+              handleErrorToast("Couldn't create trivia, try again later!");
             }
           } catch (Exception) {
             console.log("Error occured when tried adding trivia to db", Exception);

@@ -14,7 +14,7 @@ export const triviasTable = sqliteTable('trivias', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   imageUrl: text('image_url').notNull(),
-  creatorId: text('creator_id')
+  creatorId: integer('creator_id')
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
   createdAt: text('created_at')

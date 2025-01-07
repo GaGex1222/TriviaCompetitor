@@ -13,6 +13,7 @@ export async function POST(req: NextRequest){
     const description = formData.get('descriptionInput') as string;
     const userId = formData.get('userId') as string;
     const questionsData: Questions[] = JSON.parse(formData.get('questionsData') as string);
+    console.log("USER ID", userId)
 
     if(!file){
         return errorResponse("File not found.")
@@ -23,7 +24,7 @@ export async function POST(req: NextRequest){
         if(!success){
             return NextResponse.json({success: "false", message: "Internal server occured!"}, {status: 500})
         } else {
-            const insertedTriviaId = await insertTrivia(title, description, userId, imageUrl as string)
+            const insertedTriviaId = await insertTrivia(title, description, Number(userId), imageUrl as string)
             const questionOptionsArray = []
             // // now adding question for each table
             const questionsArray = Object.values(questionsData).map((question: Questions) => {

@@ -3,7 +3,7 @@ import { db } from "../db";
 import { triviasTable, usersTable, questionsTable } from "../db/schema";
 import { Trivia } from "@/interfaces/trivia";
 
-export async function insertTrivia(title: string, description: string, userId: string, imageUrl: string){
+export async function insertTrivia(title: string, description: string, userId: number, imageUrl: string){
     const insertQuery = await db.insert(triviasTable).values({
         title: title,
         description: description,
