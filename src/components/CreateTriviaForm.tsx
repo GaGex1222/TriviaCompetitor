@@ -58,6 +58,7 @@ export const CreateTriviaForm = () => {
   useEffect(() => {
     if(!session){
       router.push('/')
+      handleErrorToast("You have to be logged in to create trivia!")
     }
   }, [])
 

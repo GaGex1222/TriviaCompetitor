@@ -1,15 +1,17 @@
 'use client'
 import { signOut, useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { handleErrorToast } from '@/toastFunctions';
 import { Toaster } from 'react-hot-toast';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { House, FileSearch, BadgePlus, Key, List } from 'lucide-react';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
+    const router = useRouter();
     useEffect(() => {
         if (status == 'loading') {
             return;
@@ -23,12 +25,23 @@ export default function Navbar() {
     const [mobileMenu, setMobileMenu] = useState(false);
 
     const toggleDropdown = () => {
+        if(mobileMenu){
+            toggleMobileMenu()
+        }
         setShowMenu(!showMenu);
     };
 
     const toggleMobileMenu = () => {
+        if(showMenu){
+            toggleDropdown()
+        }
         setMobileMenu(!mobileMenu);
     };
+
+    const handleMobileButtonClick =  (pathToRoute: string) => {
+        toggleMobileMenu()
+        router.push(pathToRoute)
+    }
 
     const handleCreateTrivia = () => {
         if (session) {
@@ -107,7 +120,7 @@ export default function Navbar() {
                         <div className="absolute right-44 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
                             <div className="">
                                 <button
-                                    onClick={() => redirect(`/profile/${session.user.name}`)}
+                                    onClick={() => {toggleDropdown(); redirect(`/profile/${session.user.name}`)}}
                                     className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-800 focus:outline-none"
                                 >
                                     <span className="flex items-center space-x-2">
@@ -132,44 +145,51 @@ export default function Navbar() {
                     {mobileMenu && (
                         !session ? (
                             <div className="md:hidden absolute right-0 top-16 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
-                                <Link
-                                    href="/"
-                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
-                                >
-                                    Home
-                                </Link>
-                                <Link
-                                    href={'/createtrivia'}
-                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
-                                >
-                                    Create Trivia
-                                </Link>
-                                <Link
-                                    href="/browse"
-                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
-                                >
-                                    Browse
-                                </Link>
-                                <Link
-                                    href="/leaderboard"
-                                    className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
-                                >
-                                    Leaderboard
-                                </Link>
-                                {!session && (
-                                    <Link
-                                        href="/login"
-                                        className="block rounded-md px-4 py-2 text-sm text-white hover:bg-gray-800 transition-all duration-300"
-                                    >
-                                        Login
-                                    </Link>
-                                )}
+                            <button
+                                onClick={() => handleMobileButtonClick('/')}
+                                className="rounded-md px-4 py-2 text-sm text-indigo-400 hover:bg-gray-800 transition-all duration-300 flex justify-between items-center w-full"
+                            >
+                                <span>Home</span>
+                                <House className="ml-2 w-4" />
+                            </button>
+                            <hr className="opacity-20" />
+                            <button
+                                onClick={() => handleMobileButtonClick('/createtrivia')}
+                                className="rounded-md px-4 py-2 text-sm text-indigo-400 hover:bg-gray-800 transition-all duration-300 flex justify-between items-center w-full"
+                            >
+                                Create Trivia
+                                <BadgePlus className="ml-2 w-4" />
+                            </button>
+                            <hr className="opacity-20" />
+                            <button
+                                onClick={() => handleMobileButtonClick('/browse')}
+                                className="rounded-md px-4 py-2 text-sm text-indigo-400 hover:bg-gray-800 transition-all duration-300 flex justify-between items-center w-full"
+                            >
+                                Browse
+                                <Search className="ml-2 w-4" />
+                            </button>
+                            <hr className="opacity-20" />
+                            <button
+                                onClick={() => handleMobileButtonClick('/leaderboard')}
+                                className="rounded-md px-4 py-2 text-sm text-indigo-400 hover:bg-gray-800 transition-all duration-300 flex justify-between items-center w-full"
+                            >
+                                Leaderboard
+                                <List className="ml-2 w-4" />
+                            </button>
+                            <hr className="opacity-20" />
+                                <button
+                                            onClick={() => handleMobileButtonClick('/login')}
+                                            className="rounded-md px-4 py-2 text-sm text-indigo-400 hover:bg-gray-800 transition-all duration-300 flex justify-between items-center w-full"
+                                        >
+                                            Login
+                                            <Key className="ml-2 w-4" />
+                                </button>
                             </div>
                         ) : (
-                            <div className="absolute right-44 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
+                            <div className="absolute left-72 top-14 mt-2 w-48 bg-gray-900 rounded-md shadow-lg">
                                 <div className="">
                                     <button
-                                        onClick={() => redirect(`/profile/${session.user.name}`)}
+                                        onClick={() => {toggleMobileMenu(); redirect(`/profile/${session.user.name}`)}}
                                         className="rounded-md flex items-center justify-between w-full px-4 py-2 text-sm transition-all duration-300 text-indigo-400 hover:bg-gray-800 focus:outline-none"
                                     >
                                         <span className="flex items-center space-x-2">
