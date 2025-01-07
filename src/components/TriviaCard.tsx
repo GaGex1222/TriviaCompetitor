@@ -1,5 +1,6 @@
 
 import { TriviaCardProps } from '@/interfaces/props'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -12,9 +13,11 @@ export const TriviaCard: React.FC<TriviaCardProps> = ({trivia}) => {
         className="group bg-gradient-to-tr hover:cursor-pointer from-blue-500 to-indigo-600 text-white shadow-lg rounded-lg overflow-hidden transform transition duration-200 hover:scale-105"
         >
             <div className="bg-gray-500 w-full h-36">
-            <img
+            <Image
                 alt="quizImage"
                 src={trivia.imageUrl}
+                width={1000}
+                height={1000}
                 className="object-cover w-full h-full"
             />
         </div>

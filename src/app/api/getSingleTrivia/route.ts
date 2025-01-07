@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 import { getSingleTrivia } from "@/utils/dbHelper";
 export async function POST(req: NextRequest){

@@ -1,11 +1,9 @@
 import { db } from "@/db";
-import { triviasTable, usersTable } from "@/db/schema";
-import { Trivia } from "@/interfaces/trivia";
+import { usersTable } from "@/db/schema";
 import { UserData } from "@/interfaces/user";
-import { getQuestionsOfTrivias, getSingleTrivia, getTriviaQuestions } from "@/utils/dbHelper";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 import { eq } from "drizzle-orm";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 
 export async function POST(req: NextRequest){
     const { username } = await req.json()

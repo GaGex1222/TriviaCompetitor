@@ -1,8 +1,27 @@
+'use client'
 import { TrviaiResultsProps } from '@/interfaces/props';
 import { MousePointerClick } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export const TriviaResults: React.FC<TrviaiResultsProps> = ({ userAnswers, questionsAndOptions, score }) => {
+export const TriviaResults: React.FC<TrviaiResultsProps> = ({ userAnswers, questionsAndOptions, score, userId }) => {
+    useEffect(() => {
+        const incrementUserPoints = async () => {
+            try{
+                const input = {
+                    userId: userId,
+                    score: score
+                }
+                const response = await fetch('/api/incrementUserPoints', {
+                    method: "POST",
+                    body: JSON.stringify(input)
+                })
+            } catch(err){
+                console.log("Error occured when tried fetching the increment user points endpoint")
+                return
+            }
+        }
+        incrementUserPoints()
+    })
     const handleOptionStyle = (index: number, option: string) => {
         let optionStyle = 'p-4 text-white rounded-lg bg-gray-700';
 
@@ -26,6 +45,9 @@ export const TriviaResults: React.FC<TrviaiResultsProps> = ({ userAnswers, quest
             <div className="bg-gray-900 p-8 shadow-xl rounded-lg w-full max-w-4xl">
                 <div className="text-white text-center text-2xl font-semibold mb-6">
                     <h1 className='text-4xl text-indigo-400'>Nice work! You scored {`${score}/${questionsAndOptions.length}`} points</h1>
+                    {score !== 0 && (
+                        <h2 className='text-indigo-400 mt-2'>{score}  {score > 1 ? "points have" : "point has"} added been to your profile!</h2>
+                    )}
                     <p className='mt-2 text-indigo-400'>Results overview:</p>
                 </div>
                 <div className="grid gap-6 grid-cols-1 md:grid-cols-1 mb-6">

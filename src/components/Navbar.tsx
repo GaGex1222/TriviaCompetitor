@@ -1,11 +1,11 @@
 'use client'
 import { signOut, useSession } from 'next-auth/react';
-import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { handleErrorToast } from '@/toastFunctions';
 import { Toaster } from 'react-hot-toast';
 import { User, LogOut } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -40,7 +40,7 @@ export default function Navbar() {
                             Trivia Competitors
                         </a>
                         <p>
-                            <img alt='logo' className='drop-shadow-sm object-contain' width={80} src={'https://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/image-removebg-preview.png'}/>
+                            <Image alt='logo' className='drop-shadow-sm object-contain' height={80} width={80} src={'https://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/image-removebg-preview.png'}/>
                         </p>
                     </div>
                     <div className="hidden md:flex space-x-12 flex-grow justify-center">
@@ -80,13 +80,15 @@ export default function Navbar() {
                         ) : (
                             <>
                                 <button onClick={toggleDropdown}>
-                                    <img
+                                    <Image
                                         src={
                                             session.user?.image
                                                 ? session.user.image
                                                 : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
                                         }
                                         className="rounded-full w-10 h-10 object-cover"
+                                        width={80}
+                                        height={80}
                                         alt="profile_picture"
                                     />
                                 </button>

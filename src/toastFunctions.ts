@@ -1,4 +1,6 @@
 import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { Session } from "next-auth"
 
 
 export const handleSuccesToast = (message: string) => {
@@ -19,4 +21,11 @@ export const handleErrorToast = (message: string) => {
             border: "3px solid #ff4b4b"
         }
     })
+}
+
+export const handleNotLoggedIn = (session: Session ,router: ReturnType<typeof useRouter>) => {
+    if(!session){
+        handleErrorToast("You have to be logged in to use this feature!")
+        router.push('/')
+    }
 }

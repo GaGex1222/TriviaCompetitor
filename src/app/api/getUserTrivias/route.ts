@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { Trivia } from "@/interfaces/trivia";
 import { triviasTable } from "@/db/schema";
 import { eq } from "drizzle-orm";

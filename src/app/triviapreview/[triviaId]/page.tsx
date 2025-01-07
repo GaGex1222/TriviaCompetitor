@@ -1,12 +1,16 @@
 'use client'
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trivia } from "@/interfaces/trivia";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { handleNotLoggedIn } from "@/toastFunctions";
 export default function PlayTrivia({ params }) {
 
   const [triviaId, setTriviaId] = useState<number | undefined>(undefined);
   const [triviaData, setTriviaData] = useState<Trivia | undefined>(undefined);
   const router = useRouter();
+  const {data: session} = useSession();
 
   useEffect(() => {
     const fetchTriviaId = async () => {
@@ -49,7 +53,7 @@ export default function PlayTrivia({ params }) {
         {triviaData ? (
           <>
             <div className="bg-gray-500 w-full h-60">
-                <img alt="quizImage" src={triviaData.imageUrl} className="object-cover w-full h-full rounded-lg" />
+                <Image width={1000} height={1000} alt="quizImage" src={triviaData.imageUrl} className="object-cover w-full h-full" />
             </div>
             <div className="p-6">
               <h1 className="text-4xl text-center text-white font-semibold mb-4">{triviaData.title}</h1>
@@ -66,7 +70,7 @@ export default function PlayTrivia({ params }) {
                 Browse More
               </button>
               <button
-                onClick={() => router.push(`/playtrivia/${triviaData.id}`)}
+                onClick={() => handleNotLoggedIn(session, router)}
                 className="bg-indigo-600 relative  text-white py-2 px-4 rounded mt-4 transition-all duration-300 hover:bg-indigo-700"
               >
                 Play

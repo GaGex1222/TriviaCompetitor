@@ -3,7 +3,6 @@ import { Varela_Round } from 'next/font/google'
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-import { Footer } from "@/components/Footer";
 
 const varelaRound = Varela_Round({
   weight: '400',

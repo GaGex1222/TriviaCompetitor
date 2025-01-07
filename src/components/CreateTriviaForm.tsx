@@ -1,14 +1,13 @@
 "use client";
-import { handleErrorToast, handleSuccesToast } from "@/toastFunctions";
+import { handleErrorToast, handleNotLoggedIn, handleSuccesToast } from "@/toastFunctions";
 import { useSession } from "next-auth/react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Questions } from "@/interfaces/question";
 import { triviaCreationValidation } from "@/utils/dataHelper";
 import { TriviaFormErrors } from "./TriviaFormErrors";
 
 export const CreateTriviaForm = () => {
-  const [buttonLoading, setButtonLoading] = useState(false);
   const defaultTriviaValues: Questions = {
     questionTitle: "",
     options: {
@@ -28,11 +27,8 @@ export const CreateTriviaForm = () => {
   }>({
     1: defaultTriviaValues,
   });
-  console.log(questionsData);
   const [questionIndex, setQuestionIndex] = useState(1);
-  const questionOptions = questionsData[questionIndex]?.options
-    ? Object.keys(questionsData[questionIndex].options)
-    : [];
+  const questionOptions = questionsData[questionIndex]?.options ? Object.keys(questionsData[questionIndex].options): [];
 
   const handleQuestionOptionChange = (
     event: React.FormEvent<HTMLInputElement>
@@ -58,6 +54,10 @@ export const CreateTriviaForm = () => {
   const handleCloseFormErrors = () => {
     setShowValidationErrors(false);
   };
+
+  useEffect(() => {
+    handleNotLoggedIn(session, router)
+  }, [])
 
   const handleQuestionTitleChange = (
     event: React.FormEvent<HTMLInputElement>
@@ -87,13 +87,13 @@ export const CreateTriviaForm = () => {
     } else {
       questionsData[questionIndex]["options"][keyName]["isCorrect"] = true;
     }
-    setQuestionsData((prevState) => (prevState = updatedQuestionData));
+    setQuestionsData(updatedQuestionData);
   };
 
   const handleOptionDelete = (keyName: string) => {
     const updatedQuestionsData = { ...questionsData };
     delete questionsData[questionIndex]["options"][keyName];
-    setQuestionsData((prevState) => (prevState = updatedQuestionsData));
+    setQuestionsData(updatedQuestionsData);
     handleSuccesToast("Option successfully deleted!");
   };
 
@@ -108,7 +108,7 @@ export const CreateTriviaForm = () => {
       text: "",
       isCorrect: false,
     };
-    setQuestionsData((prevState) => (prevState = updatedQuestionData));
+    setQuestionsData(updatedQuestionData);
   };
 
   const handleQuestionDeletion = () => {
@@ -184,7 +184,6 @@ export const CreateTriviaForm = () => {
         );
         if (triviaFormValid === true) {
           try {
-            setButtonLoading(true);
             const response = await fetch("/api/createTrivia", {
               method: "POST",
               body: formData,
@@ -198,8 +197,6 @@ export const CreateTriviaForm = () => {
             console.log("Error occured when tried adding trivia to db", Exception);
             handleErrorToast("Couldn't create trivia, try again later!");
             return;
-          } finally {
-            setButtonLoading(false);
           }
         } else {
           setShowValidationErrors(true);

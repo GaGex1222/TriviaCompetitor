@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { db } from "@/db";
-import { questionOptionsTable, questionsTable, triviasTable, usersTable } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { triviasTable, usersTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 import { Trivia } from "@/interfaces/trivia";
 import { getQuestionsOfTrivias } from "@/utils/dbHelper";

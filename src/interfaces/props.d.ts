@@ -8,6 +8,7 @@ export interface TriviaFormErrorsProps {
 
 export interface TrviaiResultsProps {
     userAnswers: string[],
+    userId: string,
     questionsAndOptions: Array<PlayTriviaQuestions>,
     score: number
 }

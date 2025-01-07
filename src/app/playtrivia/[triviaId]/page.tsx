@@ -5,8 +5,12 @@ import { PlayTriviaQuestions } from "@/interfaces/trivia";
 import { handleErrorToast } from "@/toastFunctions";
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function PlayTriviaPage({ params }) {
+  const {data: session} = useSession();
+  const router = useRouter();
   const [triviaId, setTriviaId] = useState();
   const [questions, setQuestions] = useState<Array<PlayTriviaQuestions>>([]);
   const [seconds, setSeconds] = useState(60);
@@ -60,6 +64,10 @@ export default function PlayTriviaPage({ params }) {
   };
 
   useEffect(() => {
+    if(!session){
+      handleErrorToast("You have to be logged in to play!")
+      router.push('/')
+    }
     const fetchTriviaId = async () => {
       const { triviaId } = await params;
       setTriviaId(triviaId);
@@ -104,6 +112,7 @@ export default function PlayTriviaPage({ params }) {
             questionsAndOptions={questions}
             score={userScore}
             userAnswers={userAnswers}
+            userId={session.userId}
           />
         </div>
       </div>
@@ -118,10 +127,8 @@ export default function PlayTriviaPage({ params }) {
           </div>
         </div>
 
-        {/* Question Title */}
         <div className="text-white text-2xl font-semibold mb-4">
           <p>{questions[questionIndex].title}</p>{" "}
-          {/* Assuming each question has a 'title' */}
         </div>
 
         <div className="bg-gray-500 w-full h-96 mb-6">

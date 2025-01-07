@@ -1,6 +1,5 @@
-import { Questions, QuestionsAndOptions } from "../interfaces/question";
+import { Questions } from "../interfaces/question";
 import { PlayTriviaQuestions } from "../interfaces/trivia";
-import { handleErrorToast } from "../toastFunctions";
 
 export function triviaCreationValidation(questionsData: { [key: string]: Questions }, fileKbSize: number, fileType: string){
 

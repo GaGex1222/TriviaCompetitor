@@ -31,7 +31,7 @@ export async function POST(req: NextRequest){
         console.log(newUserProfile)
         return successResponse("Changed successfully user data!", newUserProfile)
     } catch(err){
-        console.error(errorResponse)
+        console.error(err)
         return errorResponse('Failed to change user data!')
     }
 }
