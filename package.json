@@ -6,6 +6,13 @@
   
   "private": true,
   
+  "resolutions": {
+  
+    
+  "react-countup/countup.js": "2.5.0"
+  
+  },
+  
   "scripts": {
   
     
@@ -29,6 +36,9 @@
   
     
   "@libsql/client": "^0.14.0",
+  
+    
+  "@libsql/core": "^0.14.0",
   
     
   "@radix-ui/react-slot": "^1.1.1",
