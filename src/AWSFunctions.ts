@@ -29,7 +29,7 @@ const config: S3ClientConfig = {
 };
 
 export default async function uploadAWSImage(fileUploaded: File) {
-    const tempDir = process.env.TEMP_DIR_PATH!;
+    const tempDir = process.env.NODE_ENV === 'production' ? '/tmp' : 'C:/Users/gald1/Desktop/TriviaCompetitors/triviacompetitors/src/tempFiles';
     const fileName = `${Date.now()}_${fileUploaded.name}`;
     const filePath = path.join(tempDir, fileName);
     const buffer = Buffer.from(await fileUploaded.arrayBuffer());
