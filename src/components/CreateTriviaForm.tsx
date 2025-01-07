@@ -22,6 +22,7 @@ export const CreateTriviaForm = () => {
   const [canCreateQuestion, setCanCreateQuestion] = useState(true);
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const { data: session } = useSession();
+  const [creationLoading, setCreationLoading] = useState(false);
   const [questionsData, setQuestionsData] = useState<{
     [key: number]: Questions;
   }>({
@@ -169,6 +170,7 @@ export const CreateTriviaForm = () => {
   };
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    setCreationLoading(true)
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const questionsDataJSON = JSON.stringify(questionsData);
@@ -216,6 +218,7 @@ export const CreateTriviaForm = () => {
       );
       return;
     }
+    setCreationLoading(false)
   };
 
   return (
@@ -315,7 +318,8 @@ export const CreateTriviaForm = () => {
                 <button
                   type="button"
                   onClick={handleOptionCreation}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  disabled={creationLoading}
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   Add Option
                 </button>
@@ -325,15 +329,17 @@ export const CreateTriviaForm = () => {
               <div className="flex space-x-4 mb-4">
                 <button
                   type="button"
+                  disabled={creationLoading}
                   onClick={handleQuestionCreation}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   Create Question
                 </button>
                 <button
                   type="button"
+                  disabled={creationLoading}
                   onClick={handleQuestionDeletion}
-                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                  className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                 >
                   Delete Question
                 </button>
@@ -341,18 +347,20 @@ export const CreateTriviaForm = () => {
               <div className="flex justify-between w-full max-w-lg space-x-20 mt-5">
                 <button
                   type="button"
+                  disabled={creationLoading}
                   onClick={handlePreviosQuestion}
-                  className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}
+                  className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50`}
                 >
                   Previous Question
                 </button>
-                <button type="submit" className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}>
+                <button disabled={creationLoading} type="submit" className={`flex-1 disabled:opacity-50 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}>
                   Upload Trivia
                 </button>
                 <button
                   type="button"
                   onClick={handleNextButton}
-                  className={`flex-1 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}
+                  disabled={creationLoading}
+                  className={`flex-1 px-4 disabled:opacity-50 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700`}
                 >
                   Next Question
                 </button>
