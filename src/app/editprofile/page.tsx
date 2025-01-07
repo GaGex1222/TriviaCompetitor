@@ -28,7 +28,7 @@ export default function EditProfilePage() {
                 console.log("RESULT", result)
                 const updatedUserData = result['data'][0]
                 console.log("sddsdsss", updatedUserData)
-                const updSession = await update({
+                await update({
                     user: {
                         ...session.user,
                         image: updatedUserData.profileUrl,
@@ -76,7 +76,7 @@ export default function EditProfilePage() {
             }
             fetchUserData()
         }
-    }, [status, session])
+    }, [status, session, router])
 
     if (status === 'loading' || loading) {
         return (

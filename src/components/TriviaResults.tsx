@@ -11,12 +11,12 @@ export const TriviaResults: React.FC<TrviaiResultsProps> = ({ userAnswers, quest
                     userId: userId,
                     score: score
                 }
-                const response = await fetch('/api/incrementUserPoints', {
+                await fetch('/api/incrementUserPoints', {
                     method: "POST",
                     body: JSON.stringify(input)
                 })
             } catch(err){
-                console.log("Error occured when tried fetching the increment user points endpoint")
+                console.log("Error occured when tried fetching the increment user points endpoint", err)
                 return
             }
         }

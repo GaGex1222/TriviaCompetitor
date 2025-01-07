@@ -7,7 +7,7 @@ import { db } from "@/db";
 import { errorResponse, successResponse } from "@/utils/responseHelper";
 
 export async function POST(req: NextRequest){
-    const {userId, page} = await req.json()
+    const {userId} = await req.json()
     try{
         const triviasData: Trivia[] = await db
         .select({

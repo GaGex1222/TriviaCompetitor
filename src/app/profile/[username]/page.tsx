@@ -12,7 +12,7 @@ import Image from "next/image";
 
 export default function ProfilePage({ params }) {
     const router = useRouter();
-    const {data: session, status} = useSession();
+    const {data: session} = useSession();
     const [username, setUsername] = useState('');
     const [userData, setUserData] = useState<UserData>(null);
     const [userNotFound, setUserNotFound] = useState(false);

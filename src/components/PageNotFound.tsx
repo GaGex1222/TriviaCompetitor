@@ -13,7 +13,7 @@ export default function PageNotFound() {
           Oops! <span className="text-indigo-700">404</span>
         </h1>
         <p className="text-gray-200 text-lg mb-6">
-          The page you're looking for doesn't exist or may have been moved.<br />
+          The page you&apos;re looking for doesn&apos;t exist or may have been moved.<br />
           But don’t worry! There’s still plenty to explore.
         </p>
         <div className="flex justify-center gap-4">

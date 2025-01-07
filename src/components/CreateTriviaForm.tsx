@@ -152,9 +152,9 @@ export const CreateTriviaForm = () => {
       handleErrorToast("Wait before creating another question!");
       return;
     }
-    setCanCreateQuestion((prevState) => (prevState = false));
+    setCanCreateQuestion(false);
     setTimeout(() => {
-      setCanCreateQuestion((prevState) => (prevState = true));
+      setCanCreateQuestion(true);
     }, 3000);
   };
 

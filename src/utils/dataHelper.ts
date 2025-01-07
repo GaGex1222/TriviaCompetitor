@@ -16,7 +16,7 @@ export function triviaCreationValidation(questionsData: { [key: string]: Questio
         isValid = false;
     }
 
-    for(let keyName in questionsData){
+    for(const keyName in questionsData){
         const currentQuestionOptions = Object.values(questionsData[keyName].options)
         
         const isCorrectAnswer = currentQuestionOptions.some((optionValue) => {

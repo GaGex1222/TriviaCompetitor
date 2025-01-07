@@ -10,7 +10,9 @@ const Leaderboard = () => {
     const router = useRouter();
     const [usersData, setUsersData] = useState<UserData[]>([]);
     useEffect(() => {
+      
         const fetchUserData = async () => {
+          setLoading(true)
             const response = await fetch('/api/getUsersData')
             if(response.status === 200){
                 const result = await response.json()
@@ -18,13 +20,16 @@ const Leaderboard = () => {
                 
             }
         }
+        
         try{
             fetchUserData()
         } catch(err){
             console.error(err)
             handleErrorToast("Couldn't get users!")
         }
+        setLoading(false)
     }, [])
+    
   if(loading){
     return (
         <div className="text-white flex h-screen justify-center p-6">

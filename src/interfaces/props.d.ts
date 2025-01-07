@@ -1,4 +1,4 @@
-import { PlayTriviaQuestions, QuestionsAndOptions } from "./question";
+import { PlayTriviaQuestions } from "./question";
 import { Trivia } from "./trivia";
 
 export interface TriviaFormErrorsProps {

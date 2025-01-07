@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
-import { Trivia } from "@/interfaces/trivia";
-import { triviasTable, usersTable } from "@/db/schema";
+import { usersTable } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { errorResponse, successResponse } from "@/utils/responseHelper";

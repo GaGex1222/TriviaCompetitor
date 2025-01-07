@@ -1,7 +1,4 @@
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"
-import { Session } from "next-auth"
-
 
 export const handleSuccesToast = (message: string) => {
     toast.success(message, {

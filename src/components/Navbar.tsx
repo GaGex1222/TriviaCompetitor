@@ -6,6 +6,7 @@ import { handleErrorToast } from '@/toastFunctions';
 import { Toaster } from 'react-hot-toast';
 import { User, LogOut } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
@@ -36,20 +37,20 @@ export default function Navbar() {
             <nav className="bg-gradient-to-tr sticky top-0 from-blue-500 to-indigo-600 shadow-md p-4 z-10 h-[75px]"> 
                 <div className="container mx-auto flex justify-between items-center">
                     <div className="flex items-center">
-                        <a href="/" className="text-3xl font-extrabold text-white drop-shadow-md">
+                        <Link href="/" className="text-3xl font-extrabold text-white drop-shadow-md">
                             Trivia Competitors
-                        </a>
+                        </Link>
                         <p>
                             <Image alt='logo' className='drop-shadow-sm object-contain' height={80} width={80} src={'https://trivia-competitors-image-storage.s3.eu-north-1.amazonaws.com/image-removebg-preview.png'}/>
                         </p>
                     </div>
                     <div className="hidden md:flex space-x-12 flex-grow justify-center">
-                        <a
+                        <Link
                             href="/"
                             className="text-white text-lg hover:text-indigo-200 transition duration-300"
                         >
                             Home
-                        </a>
+                        </Link>
                         <button
                             onClick={handleCreateTrivia}
                             className="text-white text-lg hover:text-indigo-200 transition duration-300"

@@ -25,7 +25,7 @@ export async function POST(req: NextRequest){
             .from(questionOptionsTable)
             .where(eq(questionOptionsTable.questionId, question.id))
             const organaizedObject = {}
-            for (let option of questionOptions) {
+            for (const option of questionOptions) {
                 organaizedObject[option.questionOptionTitle] = option.correctAnswer
             }
 
