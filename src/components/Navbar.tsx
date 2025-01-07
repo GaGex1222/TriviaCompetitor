@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import { User, LogOut, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { House, FileSearch, BadgePlus, Key, List } from 'lucide-react';
+import { House, BadgePlus, Key, List } from 'lucide-react';
 
 export default function Navbar() {
     const { data: session, status } = useSession();
