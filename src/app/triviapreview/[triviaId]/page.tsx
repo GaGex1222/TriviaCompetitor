@@ -1,16 +1,24 @@
 'use client'
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trivia } from "@/interfaces/trivia";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { handleNotLoggedIn } from "@/toastFunctions";
+import { handleErrorToast } from "@/toastFunctions";
 export default function PlayTrivia({ params }) {
 
   const [triviaId, setTriviaId] = useState<number | undefined>(undefined);
   const [triviaData, setTriviaData] = useState<Trivia | undefined>(undefined);
   const router = useRouter();
   const {data: session} = useSession();
+
+  const handlePlayButton = () => {
+    if(session){
+      router.push(`/playtrivia/${triviaData.id}`)
+    } else {
+      handleErrorToast("You have to be logged in to play!")
+    }
+  }
 
   useEffect(() => {
     const fetchTriviaId = async () => {
@@ -70,7 +78,7 @@ export default function PlayTrivia({ params }) {
                 Browse More
               </button>
               <button
-                onClick={() => handleNotLoggedIn(session, router)}
+                onClick={handlePlayButton}
                 className="bg-indigo-600 relative  text-white py-2 px-4 rounded mt-4 transition-all duration-300 hover:bg-indigo-700"
               >
                 Play

@@ -1,5 +1,5 @@
 "use client";
-import { handleErrorToast, handleNotLoggedIn, handleSuccesToast } from "@/toastFunctions";
+import { handleErrorToast, handleSuccesToast } from "@/toastFunctions";
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -56,7 +56,9 @@ export const CreateTriviaForm = () => {
   };
 
   useEffect(() => {
-    handleNotLoggedIn(session, router)
+    if(!session){
+      router.push('/')
+    }
   }, [])
 
   const handleQuestionTitleChange = (
@@ -108,6 +110,7 @@ export const CreateTriviaForm = () => {
       text: "",
       isCorrect: false,
     };
+    handleSuccesToast('Option has been added successfully!')
     setQuestionsData(updatedQuestionData);
   };
 

@@ -2,6 +2,7 @@
 import { UserSpecificTriviasProps } from '@/interfaces/props'
 import React from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export const UserSpecificTrivias: React.FC<UserSpecificTriviasProps> = ({triviaData, page}) => {
     const router = useRouter();
@@ -14,10 +15,12 @@ export const UserSpecificTrivias: React.FC<UserSpecificTriviasProps> = ({triviaD
         {triviasToShow.map((trivia) => (
             <div key={trivia.id} onClick={() => router.push(`/triviapreview/${trivia.id}`)} className="flex items-start space-x-4 bg-gray-700 rounded-lg p-4 shadow-md hover:shadow-lg transform transition duration-200 hover:scale-105 hover:cursor-pointer">
                 <div className="w-20 h-20 rounded-lg overflow-hidden">
-                    <img
+                    <Image
                         className="w-full h-full object-cover"
                         src={trivia.imageUrl}
                         alt="Trivia image"
+                        width={1000}
+                        height={1000}
                     />
                 </div>
                 <div className="flex-1">

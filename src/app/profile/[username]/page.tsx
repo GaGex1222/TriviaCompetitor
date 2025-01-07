@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { MoveRight, MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function ProfilePage({ params }) {
     const router = useRouter();
@@ -105,10 +106,12 @@ export default function ProfilePage({ params }) {
                 <div className="flex items-center justify-between px-6 py-4">
                     <div className="flex items-center space-x-4">
                         <div className="w-20 h-20 rounded-full flex items-center justify-center bg-green-600 border-4 border-indigo-700">
-                            <img
+                            <Image
                                 className="w-full h-full object-cover rounded-full"
                                 src={userData.profileUrl ? userData.profileUrl : 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg'}
                                 alt="Profile"
+                                width={1000}
+                                height={1000}
                             />
                         </div>
                         <div className='flex flex-col'>

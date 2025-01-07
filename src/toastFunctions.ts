@@ -23,9 +23,3 @@ export const handleErrorToast = (message: string) => {
     })
 }
 
-export const handleNotLoggedIn = (session: Session ,router: ReturnType<typeof useRouter>) => {
-    if(!session){
-        handleErrorToast("You have to be logged in to use this feature!")
-        router.push('/')
-    }
-}
