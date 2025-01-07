@@ -170,56 +170,58 @@ export const CreateTriviaForm = () => {
   };
 
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    setCreationLoading(true)
     event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
-    const questionsDataJSON = JSON.stringify(questionsData);
-    formData.append("questionsData", questionsDataJSON);
-    formData.append("userId", session?.userId as string);
-    const fileUploaded: FormDataEntryValue | null = formData.get("fileInput");
-    console.log("Question data", questionsData);
-    if (fileUploaded) {
-      if (fileUploaded instanceof File) {
-        const fileSize = fileUploaded.size;
-        const fileKbSize = fileSize / 1024;
-        const fileType: string = fileUploaded.type;
-        const triviaFormValid = triviaCreationValidation(
-          questionsData,
-          fileKbSize,
-          fileType
-        );
-        if (triviaFormValid === true) {
-          try {
-            const response = await fetch("/api/createTrivia", {
-              method: "POST",
-              body: formData,
-            });
-            const result = await response.json();
-            if (result.success) {
-              handleSuccesToast("Trivia created successfully!");
-              router.push(`/triviapreview/${result.insertedTriviaId}`);
-            } else {
-              handleErrorToast("Couldn't create trivia, try again later!");
-            }
-          } catch (Exception) {
-            console.log("Error occured when tried adding trivia to db", Exception);
-            handleErrorToast("Couldn't create trivia, try again later!");
+    setCreationLoading(true);
+    
+    try {
+        const formData = new FormData(event.target as HTMLFormElement);
+        const questionsDataJSON = JSON.stringify(questionsData);
+        formData.append("questionsData", questionsDataJSON);
+        formData.append("userId", session?.userId as string);
+
+        const fileUploaded: FormDataEntryValue | null = formData.get("fileInput");
+        console.log("Question data", questionsData);
+
+        if (!fileUploaded) {
+            handleErrorToast("Couldn't get file from submission of form, try again later");
             return;
-          }
-        } else {
-          setShowValidationErrors(true);
-          setValidationErrors(triviaFormValid);
-          return;
         }
-      }
-    } else {
-      handleErrorToast(
-        "Couldn't get file from submission of form, try again later"
-      );
-      return;
+
+        if (fileUploaded instanceof File) {
+            const fileSize = fileUploaded.size;
+            const fileKbSize = fileSize / 1024;
+            const fileType: string = fileUploaded.type;
+
+            const triviaFormValid = triviaCreationValidation(questionsData, fileKbSize, fileType);
+
+            if (triviaFormValid !== true) {
+                setShowValidationErrors(true);
+                setValidationErrors(triviaFormValid);
+                return;
+            }
+
+            const response = await fetch("/api/createTrivia", {
+                method: "POST",
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                handleSuccesToast("Trivia created successfully!");
+                router.push(`/triviapreview/${result.insertedTriviaId}`);
+            } else {
+                handleErrorToast("Couldn't create trivia, try again later!");
+            }
+        }
+    } catch (error) {
+        console.error("Error occurred when trying to add trivia to db", error);
+        handleErrorToast("Couldn't create trivia, try again later!");
+    } finally {
+        setCreationLoading(false); 
     }
-    setCreationLoading(false)
-  };
+};
+
 
   return (
     <>
