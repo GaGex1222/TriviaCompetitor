@@ -6,7 +6,7 @@ export interface Trivia {
     creatorId?: number
     createdAt: string
     username?: string
-    questions?: Array<Object>
+    questions?: Array<object>
 }
 
 export interface PlayTriviaQuestions {
